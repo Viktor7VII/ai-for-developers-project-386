@@ -1,5 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="686568f7-bf7c-48b9-ad33-95f63523cbdf" name="Changes" comment="Create_Project" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="KubernetesApiProvider">{}</component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0131390064883392" />
+      <entry key="MS500" value="1.4204482076268572" />
+      <entry key="S2" value="1.8052451659746271" />
+      <entry key="S5" value="1.9170040432046713" />
+      <entry key="S10" value="1.9576032806985737" />
+      <entry key="S30" value="1.9856631986401876" />
+      <entry key="S60" value="1.992805720491269" />
+      <entry key="M2" value="1.9963963671608145" />
+      <entry key="M5" value="1.9985569855219025" />
+      <entry key="M10" value="1.9992782322866351" />
+      <entry key="M15" value="1.9995187636226661" />
+      <entry key="M30" value="1.999759352855809" />
+      <entry key="H1" value="1.9998796691881524" />
+      <entry key="H2" value="1.9999398327840292" />
+      <entry key="H4" value="1.9999699159394893" />
+      <entry key="D1" value="1.999994985927063" />
+      <entry key="W1" value="1.9999992837023268" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.8436965531461554" />
+      <entry key="MS500" value="1.3509534594081318" />
+      <entry key="S2" value="1.7794297373203571" />
+      <entry key="S5" value="1.9056843123742873" />
+      <entry key="S10" value="1.951762332698948" />
+      <entry key="S30" value="1.9836744369986024" />
+      <entry key="S60" value="1.9918060184468196" />
+      <entry key="M2" value="1.9958951783152514" />
+      <entry key="M5" value="1.9983561879394605" />
+      <entry key="M10" value="1.9991777797406434" />
+      <entry key="M15" value="1.99945178330718" />
+      <entry key="M30" value="1.999725856720823" />
+      <entry key="H1" value="1.9998629196260678" />
+      <entry key="H2" value="1.999931457629304" />
+      <entry key="H4" value="1.9999657282687013" />
+      <entry key="D1" value="1.9999942879689554" />
+      <entry key="W1" value="1.9999991839937081" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1,
+  "fromUser": false
+}]]></component>
   <component name="ProjectId" id="3Ls9StdUBm3BOWeZs3MJm3NX2tp" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "C:/Users/user/IdeaProjects/ai-for-developers-project-386/src/Main.java"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-ac68fc9d2b05-intellij.indexing.shared.core-IU-263.7307.200" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="686568f7-bf7c-48b9-ad33-95f63523cbdf" name="Changes" comment="" />
+      <created>1794231913054</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1794231913054</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Create_Project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create_Project" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>10</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
 </project>
