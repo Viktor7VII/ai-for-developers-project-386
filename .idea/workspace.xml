@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="686568f7-bf7c-48b9-ad33-95f63523cbdf" name="Changes" comment="Create_Project">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="686568f7-bf7c-48b9-ad33-95f63523cbdf" name="Changes" comment="Readme_fill" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,23 +28,23 @@
   <component name="KubernetesApiProvider">{}</component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0131390064883392" />
-      <entry key="MS500" value="1.4204482076268572" />
-      <entry key="S2" value="1.8052451659746271" />
-      <entry key="S5" value="1.9170040432046713" />
-      <entry key="S10" value="1.9576032806985737" />
-      <entry key="S30" value="1.9856631986401876" />
-      <entry key="S60" value="1.992805720491269" />
-      <entry key="M2" value="1.9963963671608145" />
-      <entry key="M5" value="1.9985569855219025" />
-      <entry key="M10" value="1.9992782322866351" />
-      <entry key="M15" value="1.9995187636226661" />
-      <entry key="M30" value="1.999759352855809" />
-      <entry key="H1" value="1.9998796691881524" />
-      <entry key="H2" value="1.9999398327840292" />
-      <entry key="H4" value="1.9999699159394893" />
-      <entry key="D1" value="1.999994985927063" />
-      <entry key="W1" value="1.9999992837023268" />
+      <entry key="MS100" value="1.0000000000000016" />
+      <entry key="MS500" value="1.0013439424825668" />
+      <entry key="S2" value="1.462006513342887" />
+      <entry key="S5" value="2.6656875830672266" />
+      <entry key="S10" value="3.5760332127667835" />
+      <entry key="S30" value="4.452765961904076" />
+      <entry key="S60" value="4.716123256566385" />
+      <entry key="M2" value="4.855397924568453" />
+      <entry key="M5" value="4.94150679329451" />
+      <entry key="M10" value="4.9706435575016545" />
+      <entry key="M15" value="4.980404546742962" />
+      <entry key="M30" value="4.990190006785729" />
+      <entry key="H1" value="4.9950919328420085" />
+      <entry key="H2" value="4.997545198294688" />
+      <entry key="H4" value="4.998772407054655" />
+      <entry key="D1" value="4.999795374491047" />
+      <entry key="W1" value="4.999970767130865" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -68,23 +66,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.8436965531461554" />
-      <entry key="MS500" value="1.3509534594081318" />
-      <entry key="S2" value="1.7794297373203571" />
-      <entry key="S5" value="1.9056843123742873" />
-      <entry key="S10" value="1.951762332698948" />
-      <entry key="S30" value="1.9836744369986024" />
-      <entry key="S60" value="1.9918060184468196" />
-      <entry key="M2" value="1.9958951783152514" />
-      <entry key="M5" value="1.9983561879394605" />
-      <entry key="M10" value="1.9991777797406434" />
-      <entry key="M15" value="1.99945178330718" />
-      <entry key="M30" value="1.999725856720823" />
-      <entry key="H1" value="1.9998629196260678" />
-      <entry key="H2" value="1.999931457629304" />
-      <entry key="H4" value="1.9999657282687013" />
-      <entry key="D1" value="1.9999942879689554" />
-      <entry key="W1" value="1.9999991839937081" />
+      <entry key="MS100" value="2.1645201711328412E-12" />
+      <entry key="MS500" value="0.005921388892504974" />
+      <entry key="S2" value="0.7124827308879372" />
+      <entry key="S5" value="2.2334906870507325" />
+      <entry key="S10" value="3.327365983903204" />
+      <entry key="S30" value="4.361181423288776" />
+      <entry key="S60" value="4.669135389999275" />
+      <entry key="M2" value="4.831596164212948" />
+      <entry key="M5" value="4.931911032348611" />
+      <entry key="M10" value="4.965833067843978" />
+      <entry key="M15" value="4.977194744155129" />
+      <entry key="M30" value="4.988583698884693" />
+      <entry key="H1" value="4.994288426889379" />
+      <entry key="H2" value="4.99714335727401" />
+      <entry key="H4" value="4.998571464527743" />
+      <entry key="D1" value="4.9997618810115725" />
+      <entry key="W1" value="4.999965982273178" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -145,7 +143,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Create_Project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create_Project" />
+    <MESSAGE value="Readme_fill" />
+    <option name="LAST_COMMIT_MESSAGE" value="Readme_fill" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
