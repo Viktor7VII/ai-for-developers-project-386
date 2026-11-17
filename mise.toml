@@ -1,0 +1,10 @@
+[settings]
+experimental = true
+
+[tools]
+node = "26"
+java = "temurin-21"
+maven = "3.9"
+
+[tasks]
+check = "node scripts/check.mjs"

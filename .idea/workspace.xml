@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="686568f7-bf7c-48b9-ad33-95f63523cbdf" name="Changes" comment="Readme_fill" />
+    <list default="true" id="686568f7-bf7c-48b9-ad33-95f63523cbdf" name="Changes" comment="Readme_fill">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,38 +15,38 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Viktor7VII"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Viktor7VII&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Viktor7VII/ai-for-developers-project-386.git",
-    "accountId": "34e5c744-4c5a-45eb-8d96-e5a2e2ecba01"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Viktor7VII/ai-for-developers-project-386.git&quot;,
+    &quot;accountId&quot;: &quot;34e5c744-4c5a-45eb-8d96-e5a2e2ecba01&quot;
   }
-}]]></component>
+}</component>
   <component name="KubernetesApiProvider">{}</component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000000000000016" />
-      <entry key="MS500" value="1.0013439424825668" />
-      <entry key="S2" value="1.462006513342887" />
-      <entry key="S5" value="2.6656875830672266" />
-      <entry key="S10" value="3.5760332127667835" />
-      <entry key="S30" value="4.452765961904076" />
-      <entry key="S60" value="4.716123256566385" />
-      <entry key="M2" value="4.855397924568453" />
-      <entry key="M5" value="4.94150679329451" />
-      <entry key="M10" value="4.9706435575016545" />
-      <entry key="M15" value="4.980404546742962" />
-      <entry key="M30" value="4.990190006785729" />
-      <entry key="H1" value="4.9950919328420085" />
-      <entry key="H2" value="4.997545198294688" />
-      <entry key="H4" value="4.998772407054655" />
-      <entry key="D1" value="4.999795374491047" />
-      <entry key="W1" value="4.999970767130865" />
+      <entry key="MS100" value="1.0000000047914954" />
+      <entry key="MS500" value="1.028041864703818" />
+      <entry key="S2" value="1.7654175283896014" />
+      <entry key="S5" value="2.8838660121549817" />
+      <entry key="S10" value="3.696023631132061" />
+      <entry key="S30" value="4.492583488315941" />
+      <entry key="S60" value="4.735737191811584" />
+      <entry key="M2" value="4.865251633395685" />
+      <entry key="M5" value="5.075309237068743" />
+      <entry key="M10" value="6.22128486354688" />
+      <entry key="M15" value="7.636502998572506" />
+      <entry key="M30" value="10.635088840215186" />
+      <entry key="H1" value="13.225297914132952" />
+      <entry key="H2" value="14.935441458720677" />
+      <entry key="H4" value="15.919146641551666" />
+      <entry key="D1" value="16.81271501616892" />
+      <entry key="W1" value="16.973064664902427" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -66,23 +68,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="2.1645201711328412E-12" />
-      <entry key="MS500" value="0.005921388892504974" />
-      <entry key="S2" value="0.7124827308879372" />
-      <entry key="S5" value="2.2334906870507325" />
-      <entry key="S10" value="3.327365983903204" />
-      <entry key="S30" value="4.361181423288776" />
-      <entry key="S60" value="4.669135389999275" />
-      <entry key="M2" value="4.831596164212948" />
-      <entry key="M5" value="4.931911032348611" />
-      <entry key="M10" value="4.965833067843978" />
-      <entry key="M15" value="4.977194744155129" />
-      <entry key="M30" value="4.988583698884693" />
-      <entry key="H1" value="4.994288426889379" />
-      <entry key="H2" value="4.99714335727401" />
-      <entry key="H4" value="4.998571464527743" />
-      <entry key="D1" value="4.9997618810115725" />
-      <entry key="W1" value="4.999965982273178" />
+      <entry key="MS100" value="0.9265880664234698" />
+      <entry key="MS500" value="1.0126077256143198" />
+      <entry key="S2" value="1.7595426492695105" />
+      <entry key="S5" value="2.8802164544707054" />
+      <entry key="S10" value="3.693708508112133" />
+      <entry key="S30" value="4.491648677067768" />
+      <entry key="S60" value="4.735244691858176" />
+      <entry key="M2" value="4.864998397247793" />
+      <entry key="M5" value="5.075100766599578" />
+      <entry key="M10" value="6.220723874798985" />
+      <entry key="M15" value="7.635745799919801" />
+      <entry key="M30" value="10.63430245476496" />
+      <entry key="H1" value="13.22472823538249" />
+      <entry key="H2" value="14.935098310040031" />
+      <entry key="H4" value="15.918958290575883" />
+      <entry key="D1" value="16.812681083874946" />
+      <entry key="W1" value="16.973059752298255" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -111,7 +113,11 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "C:/Users/user/IdeaProjects/ai-for-developers-project-386/src/Main.java",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "ts.external.directory.path": "C:\\Users\\user\\AppData\\Local\\JetBrains\\IntelliJIdea2026.3\\ts-go-native-preview\\v7.1.0-dev.jetbrains.20261006.2\\node_modules\\@typescript\\typescript-win32-x64\\lib"
   },
   "keyToStringList": {
     "ChangesTree.GroupingKeys": [

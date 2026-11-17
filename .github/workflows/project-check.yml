@@ -1,0 +1,25 @@
+name: project-check
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Run project checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install project tools
+        uses: jdx/mise-action@v4
+
+      - name: Run all checks
+        run: mise run check
