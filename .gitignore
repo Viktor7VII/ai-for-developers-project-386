@@ -34,3 +34,6 @@ bin/
 
 # Build artifacts
 **/dist/
+
+# Local H2 database files
+backend/data/

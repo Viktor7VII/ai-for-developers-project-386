@@ -15,3 +15,213 @@ model HealthResponse {
 @route("/actuator/health")
 @get
 op health(): HealthResponse;
+
+@doc("Error details returned for failed requests.")
+@error
+model ErrorResponse {
+  message: string;
+}
+
+@doc("Bad request: validation failed.")
+model BadRequestError {
+  @statusCode statusCode: 400;
+  @body body: ErrorResponse;
+}
+
+@doc("Resource not found.")
+model NotFoundError {
+  @statusCode statusCode: 404;
+  @body body: ErrorResponse;
+}
+
+@doc("Conflict with existing data.")
+model ConflictError {
+  @statusCode statusCode: 409;
+  @body body: ErrorResponse;
+}
+
+@doc("A type of meeting that visitors can book.")
+model EventType {
+  @visibility(Lifecycle.Read)
+  id: int64;
+
+  @doc("Unique URL-friendly identifier used in the public booking link.")
+  @minLength(1)
+  @maxLength(100)
+  @pattern("^[a-z0-9]+(?:-[a-z0-9]+)*$")
+  slug: string;
+
+  @minLength(1)
+  @maxLength(200)
+  title: string;
+
+  @maxLength(2000)
+  description?: string;
+
+  @doc("Meeting duration in minutes.")
+  @minValue(5)
+  @maxValue(720)
+  durationMinutes: int32;
+}
+
+@tag("EventTypes")
+@route("/api/event-types")
+interface EventTypes {
+  @doc("List all event types of the owner.")
+  @get
+  list(): EventType[];
+
+  @doc("Get an event type by id.")
+  @get
+  get(@path id: int64): EventType | NotFoundError;
+
+  @doc("Create a new event type.")
+  @post
+  create(@body eventType: EventType):
+    | {
+        @statusCode statusCode: 201;
+        @body body: EventType;
+      }
+    | BadRequestError
+    | ConflictError;
+
+  @doc("Update an existing event type.")
+  @put
+  update(@path id: int64, @body eventType: EventType):
+    | EventType
+    | BadRequestError
+    | NotFoundError
+    | ConflictError;
+}
+
+enum DayOfWeek {
+  MONDAY,
+  TUESDAY,
+  WEDNESDAY,
+  THURSDAY,
+  FRIDAY,
+  SATURDAY,
+  SUNDAY,
+}
+
+@doc("Local time of day in 24-hour HH:mm format.")
+@pattern("^([01][0-9]|2[0-3]):[0-5][0-9]$")
+scalar TimeOfDay extends string;
+
+@doc("A recurring weekly time range when the owner is available.")
+model WeeklyInterval {
+  dayOfWeek: DayOfWeek;
+
+  @doc("Start time (inclusive) in the schedule time zone.")
+  startTime: TimeOfDay;
+
+  @doc("End time (exclusive) in the schedule time zone. Must be after startTime.")
+  endTime: TimeOfDay;
+}
+
+@doc("Weekly availability of the owner.")
+model Schedule {
+  @doc("IANA time zone of the schedule, e.g. Europe/Moscow.")
+  @minLength(1)
+  @maxLength(64)
+  timeZone: string;
+
+  @doc("Available intervals. Intervals of the same day must not overlap. Empty list means no availability.")
+  @maxItems(100)
+  intervals: WeeklyInterval[];
+}
+
+@tag("Schedule")
+@route("/api/schedule")
+interface Schedules {
+  @doc("Get the owner's weekly schedule. Returns a default Mon-Fri 09:00-17:00 schedule if none was saved.")
+  @get
+  get(): Schedule;
+
+  @doc("Replace the owner's weekly schedule. Existing bookings are not affected.")
+  @put
+  update(@body schedule: Schedule): Schedule | BadRequestError;
+}
+
+@doc("A free time slot that can be booked.")
+model TimeSlot {
+  startAt: utcDateTime;
+  endAt: utcDateTime;
+}
+
+enum BookingStatus {
+  CONFIRMED,
+}
+
+@doc("Data entered by a visitor to book a time slot.")
+model BookingRequest {
+  @doc("Start of the selected slot. Must be one of the slots returned by the slots endpoint.")
+  startAt: utcDateTime;
+
+  @minLength(1)
+  @maxLength(200)
+  guestName: string;
+
+  @minLength(3)
+  @maxLength(320)
+  @pattern("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")
+  guestEmail: string;
+}
+
+@doc("A confirmed meeting booked by a visitor.")
+model Booking {
+  id: int64;
+  eventTypeId: int64;
+  eventTypeTitle: string;
+  guestName: string;
+  guestEmail: string;
+  startAt: utcDateTime;
+  endAt: utcDateTime;
+  status: BookingStatus;
+  createdAt: utcDateTime;
+}
+
+@doc("Public endpoints used by visitors without registration.")
+@tag("PublicBooking")
+@route("/api/public/event-types/{slug}")
+interface PublicBooking {
+  @doc("Get public information about an event type.")
+  @get
+  getEventType(@path slug: string): EventType | NotFoundError;
+
+  @doc("""
+    List free slots for an event type that start within [from, to).
+    Slots in the past and slots overlapping existing bookings are excluded.
+    The range must not exceed 62 days.
+    """)
+  @route("/slots")
+  @get
+  listSlots(
+    @path slug: string,
+    @query from: utcDateTime,
+    @query to: utcDateTime,
+  ): TimeSlot[] | BadRequestError | NotFoundError;
+
+  @doc("""
+    Book a slot. Availability is re-checked on the server;
+    409 is returned if the slot is taken, in the past or outside the schedule.
+    """)
+  @route("/bookings")
+  @post
+  createBooking(@path slug: string, @body booking: BookingRequest):
+    | {
+        @statusCode statusCode: 201;
+        @body body: Booking;
+      }
+    | BadRequestError
+    | NotFoundError
+    | ConflictError;
+}
+
+@tag("Bookings")
+@route("/api/bookings")
+interface Bookings {
+  @doc("List all bookings of the owner ordered by start time.")
+  @get
+  list(): Booking[];
+}
