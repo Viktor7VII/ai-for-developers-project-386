@@ -50,11 +50,11 @@
 - Backend: Java, Spring Boot.
 - Frontend: TypeScript, React, Vite.
 - UI: Mantine.
-- API: OpenAPI.
-- База данных: PostgreSQL.
+- API: TypeSpec → OpenAPI → сгенерированный TypeScript-клиент.
+- База данных: H2 (встроенная, хранится в файле). Переход на PostgreSQL запланирован.
 - Сборка backend: Maven.
-- Тестирование: JUnit 5, Vitest.
-- Линтеры: Checkstyle, Oxlint.
+- Тестирование: JUnit 5, Vitest, Testing Library.
+- Линтер frontend: Oxlint.
 - Управление инструментами и задачами: mise.
 - CI: GitHub Actions.
 
@@ -80,11 +80,78 @@ git clone https://github.com/Viktor7VII/ai-for-developers-project-386.git
 cd ai-for-developers-project-386
 ```
 
-Инструкции по установке зависимостей и запуску приложения будут добавлены по мере настройки проекта.
+Версии Java, Maven и Node.js закреплены в `mise.toml`. Установка инструментов и git-хука для проверки сообщений коммитов:
+
+```bash
+mise install
+mise exec -- hk install
+```
+
+Установка зависимостей:
+
+```bash
+cd backend && ./mvnw dependency:resolve && cd ..
+cd contracts && npm install && cd ..
+cd frontend && npm install && cd ..
+```
+
+На Windows в PowerShell используйте `.\mvnw.cmd` вместо `./mvnw` и `npm.cmd` вместо `npm`.
+
+## Запуск
+
+Приложение состоит из двух частей, их нужно запустить в отдельных терминалах.
+
+Backend (http://localhost:8080):
+
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+
+Frontend (http://localhost:5173):
+
+```bash
+cd frontend
+npm run dev
+```
+
+Dev-сервер Vite проксирует запросы `/api` на backend. Если backend запущен на другом адресе, укажите его в переменной окружения `BACKEND_URL`.
+
+Данные хранятся в файле `backend/data/calendar.mv.db` и сохраняются между перезапусками. Чтобы начать с чистой базы, остановите backend и удалите папку `backend/data`.
 
 ## Использование
 
-Инструкции по запуску backend и frontend, а также примеры работы приложения будут добавлены после реализации основного функционала.
+Кабинет владельца открывается по адресу http://localhost:5173 (регистрации нет, владелец один):
+
+1. **Типы встреч** — создайте встречу: название, ссылка, описание и длительность. Кнопка «Скопировать ссылку» копирует адрес публичной страницы записи.
+2. **Расписание** — укажите часовой пояс, рабочие дни и интервалы времени. По умолчанию: понедельник–пятница, 09:00–17:00, UTC.
+3. **Записи** — список предстоящих и прошедших встреч с именем и email посетителя.
+
+Посетитель открывает ссылку вида http://localhost:5173/book/konsultatsiya, выбирает дату и свободное время, вводит имя и email и подтверждает запись. Время показывается в часовом поясе посетителя.
+
+### API
+
+| Метод | Путь | Назначение |
+|---|---|---|
+| `GET`, `POST` | `/api/event-types` | Список и создание типов встреч |
+| `GET`, `PUT` | `/api/event-types/{id}` | Получение и изменение типа встречи |
+| `GET`, `PUT` | `/api/schedule` | Расписание владельца |
+| `GET` | `/api/bookings` | Записи владельца |
+| `GET` | `/api/public/event-types/{slug}` | Информация о встрече для посетителя |
+| `GET` | `/api/public/event-types/{slug}/slots?from=&to=` | Свободные слоты (время в UTC, период до 62 дней) |
+| `POST` | `/api/public/event-types/{slug}/bookings` | Создание записи |
+
+Полное описание — в контракте `contracts/main.tsp` и сгенерированной спецификации `contracts/openapi/openapi.yaml`.
+
+## Проверки
+
+Все проверки проекта (компиляция контракта, генерация SDK, тесты backend и frontend, линтер, сборка) запускаются одной командой из корня репозитория:
+
+```bash
+mise run check
+```
+
+Эта же команда выполняется в CI на каждый push.
 
 ---
 
