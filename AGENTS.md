@@ -33,6 +33,8 @@ The project is currently at the scaffolding stage. Do not assume that business f
 - `mise.toml` — tool versions and project tasks.
 - `mise.lock` — locked tool versions.
 - `hk.pkl` and `.hk/pkl/` — hk configuration and local Pkl dependencies.
+- `.claude/skills/` and `skills-lock.json` — agent skills installed from `mattpocock/skills`; restore them with `npx skills experimental_install`.
+- `docs/agents/` — skills configuration: issue tracker, triage labels, domain docs layout.
 
 ## Development setup
 
@@ -161,6 +163,20 @@ After cloning the repository, install the hook with:
 ```bash
 mise exec -- hk install
 ```
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live as local markdown files under `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`), recorded as a `Status:` line in each issue file. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` and ADRs in `docs/adr/` at the repo root. See `docs/agents/domain.md`.
 
 ## Working rules
 
