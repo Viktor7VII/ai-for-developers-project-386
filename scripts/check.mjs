@@ -25,8 +25,14 @@ function run(label, command, args, cwd) {
   }
 }
 
+const contracts = resolve(root, 'contracts')
 const backend = resolve(root, 'backend')
 const frontend = resolve(root, 'frontend')
+const npm = isWindows ? 'npm.cmd' : 'npm'
+
+run('Compile TypeSpec contract', npm, ['run', 'compile'], contracts)
+
+run('Generate TypeScript SDK', npm, ['run', 'generate:sdk'], contracts)
 
 run(
   'Backend tests',
@@ -35,25 +41,10 @@ run(
   backend,
 )
 
-run(
-  'Frontend tests',
-  isWindows ? 'npm.cmd' : 'npm',
-  ['test'],
-  frontend,
-)
+run('Frontend tests', npm, ['test'], frontend)
 
-run(
-  'Frontend lint',
-  isWindows ? 'npm.cmd' : 'npm',
-  ['run', 'lint'],
-  frontend,
-)
+run('Frontend lint', npm, ['run', 'lint'], frontend)
 
-run(
-  'Frontend build',
-  isWindows ? 'npm.cmd' : 'npm',
-  ['run', 'build'],
-  frontend,
-)
+run('Frontend build', npm, ['run', 'build'], frontend)
 
 console.log('\nAll project checks passed!')

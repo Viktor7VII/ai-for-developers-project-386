@@ -4,8 +4,214 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="686568f7-bf7c-48b9-ad33-95f63523cbdf" name="Changes" comment="Readme_fill">
+    <list default="true" id="686568f7-bf7c-48b9-ad33-95f63523cbdf" name="Changes" comment="chore: configure project checks and tooling&#10;&#10;Add TypeSpec compilation and SDK generation to the unified check script, ignore Node and build artifacts, and pin hk with mise. Add repository guidance and hk built-in configurations.">
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/Builtins.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/Config.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/actionlint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/alejandra.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ansible_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/aqua_update_checksum.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/asciidoctor.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/astro.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/betterleaks.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/biome.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/black.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/brakeman.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/buf_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/buf_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/buildifier_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/buildifier_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/bundle_audit.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/byte_order_marker.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/cargo_check.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/cargo_clippy.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/cargo_deny.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/cargo_fmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/check_added_large_files.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/check_case_conflict.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/check_conventional_commit.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/check_executables_have_shebangs.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/check_merge_conflict.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/check_shebang_scripts_are_executable.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/check_symlinks.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/clang_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/cmake_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/cocogitto_commit_msg.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/contextlint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/cpp_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/dclint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/deadnix.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/deno.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/deno_check.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/destroyed_symlinks.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/detect_private_key.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/dotenv_linter.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/dotnet_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/dprint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/droast.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/editorconfig-checker.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/erb.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/err_check.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/eslint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/fasterer.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/fix_smart_quotes.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/flake8.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/forbid_submodules.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ghalint_action.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ghalint_workflow.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/gitleaks.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/go_fix.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/go_fmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/go_fumpt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/go_imports.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/go_lines.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/go_sec.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/go_vet.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/go_vuln_check.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/golangci_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/golangci_lint_fmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/gomod_tidy.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/google_java_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/hadolint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/harper.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/harper_commit_message.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/hclfmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/herb_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/herb_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/hk_test.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/isort.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/jactionlint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/jq.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/just_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/kingfisher.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/knip.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ktlint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/kube_linter.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/kubeconform.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ls_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/luacheck.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/lychee.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/lychee_extended.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/mado.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/markdown_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/mdschema.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/mise.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/mise_config_dir.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/mix_compile.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/mix_fmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/mix_test.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/mixed_line_ending.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/mypy.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/newlines.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/nil.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/nix_fmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/nixf_diagnose.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/nixpkgs_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/no_commit_to_branch.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/osv_scanner.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ox_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/oxfmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/packer_fmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/php_cs.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/phpstan.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/pinact.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/pinact_update.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/pkl.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/pkl_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/prettier.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/protolint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/pylint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/pyright.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/python_check_ast.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/python_debug_statements.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/reek.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/renovate_deps.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/revive.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/rubocop.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/rubocop_server.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ruff.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ruff_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/rumdl.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/rumdl_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/rustfmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ryl.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ryl_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ryl_markdown.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ryl_markdown_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/selene.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/shellcheck.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/shellharden.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/sherif.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/shfmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/sorbet.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/sort_package_json.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/sql_fluff.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/standard_js.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/standard_rb.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/staticcheck.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/stylelint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/stylua.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/swiftlint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/taplo.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/taplo_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/terraform.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/terraform_docs.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/terraform_validate.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/terragrunt_hcl_fmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/terragrunt_hcl_validate.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/test/helpers.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/textlint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/tf_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/tinymist.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/tofu.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/tofu_validate.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/tombi.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/tombi_format.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/trailing_whitespace.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/trufflehog.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/tsc.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/tsserver.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/ty.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/typos.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/typstyle.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/vacuum.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/vale.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/vp_check.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/vp_fmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/vp_lint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/xmllint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/xo.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/yamlfmt.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/yamllint.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/yq.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins/zizmor.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.hk/pkl/builtins_meta.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AGENTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/contracts/main.tsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/contracts/openapi/openapi.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/contracts/openapitools.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/contracts/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/contracts/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/contracts/tspconfig.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/client.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/.openapi-generator-ignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/.openapi-generator/FILES" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/.openapi-generator/VERSION" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/apis/DefaultApi.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/apis/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/docs/DefaultApi.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/docs/HealthResponse.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/models/HealthResponse.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/models/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/shared/api/generated/runtime.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.app.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tsconfig.app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mise.lock" beforeDir="false" afterPath="$PROJECT_DIR$/mise.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mise.toml" beforeDir="false" afterPath="$PROJECT_DIR$/mise.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/check.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/check.mjs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,23 +236,23 @@
   <component name="KubernetesApiProvider">{}</component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000000047914954" />
-      <entry key="MS500" value="1.028041864703818" />
-      <entry key="S2" value="1.7654175283896014" />
-      <entry key="S5" value="2.8838660121549817" />
-      <entry key="S10" value="3.696023631132061" />
-      <entry key="S30" value="4.492583488315941" />
-      <entry key="S60" value="4.735737191811584" />
-      <entry key="M2" value="4.865251633395685" />
-      <entry key="M5" value="5.075309237068743" />
-      <entry key="M10" value="6.22128486354688" />
-      <entry key="M15" value="7.636502998572506" />
-      <entry key="M30" value="10.635088840215186" />
-      <entry key="H1" value="13.225297914132952" />
-      <entry key="H2" value="14.935441458720677" />
-      <entry key="H4" value="15.919146641551666" />
-      <entry key="D1" value="16.81271501616892" />
-      <entry key="W1" value="16.973064664902427" />
+      <entry key="MS100" value="1.007276109007597" />
+      <entry key="MS500" value="1.6092254826903996" />
+      <entry key="S2" value="2.6481357457628514" />
+      <entry key="S5" value="3.716802494337238" />
+      <entry key="S10" value="4.565062885833249" />
+      <entry key="S30" value="5.433770631637997" />
+      <entry key="S60" value="5.706596708517118" />
+      <entry key="M2" value="5.967770126799159" />
+      <entry key="M5" value="7.244233552186086" />
+      <entry key="M10" value="9.060157738921578" />
+      <entry key="M15" value="10.169532783064717" />
+      <entry key="M30" value="11.737989223964561" />
+      <entry key="H1" value="12.763504868240256" />
+      <entry key="H2" value="13.462157803026367" />
+      <entry key="H4" value="15.223027114171806" />
+      <entry key="D1" value="28.08711253496785" />
+      <entry key="W1" value="34.64626609596219" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -68,23 +274,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9265880664234698" />
-      <entry key="MS500" value="1.0126077256143198" />
-      <entry key="S2" value="1.7595426492695105" />
-      <entry key="S5" value="2.8802164544707054" />
-      <entry key="S10" value="3.693708508112133" />
-      <entry key="S30" value="4.491648677067768" />
-      <entry key="S60" value="4.735244691858176" />
-      <entry key="M2" value="4.864998397247793" />
-      <entry key="M5" value="5.075100766599578" />
-      <entry key="M10" value="6.220723874798985" />
-      <entry key="M15" value="7.635745799919801" />
-      <entry key="M30" value="10.63430245476496" />
-      <entry key="H1" value="13.22472823538249" />
-      <entry key="H2" value="14.935098310040031" />
-      <entry key="H4" value="15.918958290575883" />
-      <entry key="D1" value="16.812681083874946" />
-      <entry key="W1" value="16.973059752298255" />
+      <entry key="MS100" value="0.952941265290642" />
+      <entry key="MS500" value="1.5914772074490224" />
+      <entry key="S2" value="2.640820250668558" />
+      <entry key="S5" value="3.7127237542613463" />
+      <entry key="S10" value="4.562569893486169" />
+      <entry key="S30" value="5.4327852127665865" />
+      <entry key="S60" value="5.7060797238810315" />
+      <entry key="M2" value="5.967498752007841" />
+      <entry key="M5" value="7.244096831439579" />
+      <entry key="M10" value="9.060068772107238" />
+      <entry key="M15" value="10.169464948818792" />
+      <entry key="M30" value="11.737949215206179" />
+      <entry key="H1" value="12.763482838064926" />
+      <entry key="H2" value="13.462144304436261" />
+      <entry key="H4" value="15.223007028359515" />
+      <entry key="D1" value="28.08708928198765" />
+      <entry key="W1" value="34.64626128232644" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -150,7 +356,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Create_Project" />
     <MESSAGE value="Readme_fill" />
-    <option name="LAST_COMMIT_MESSAGE" value="Readme_fill" />
+    <MESSAGE value="Front and back push" />
+    <MESSAGE value="Create_Project&#10;&#10;Add React frontend and Spring Boot backend&#10;&#10;Set up the frontend with Vite, React, TypeScript, Mantine, and starter UI assets. Add a Spring Boot backend with an actuator health check and test. Configure project checks with mise and GitHub Actions." />
+    <MESSAGE value="chore: configure project checks and tooling&#10;&#10;Add TypeSpec compilation and SDK generation to the unified check script, ignore Node and build artifacts, and pin hk with mise. Add repository guidance and hk built-in configurations." />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: configure project checks and tooling&#10;&#10;Add TypeSpec compilation and SDK generation to the unified check script, ignore Node and build artifacts, and pin hk with mise. Add repository guidance and hk built-in configurations." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
