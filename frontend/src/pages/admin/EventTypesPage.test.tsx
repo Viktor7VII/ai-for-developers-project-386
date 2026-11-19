@@ -25,9 +25,9 @@ describe('EventTypesPage', () => {
     vi.clearAllMocks()
   })
 
-  it('redirects from root and shows admin navigation', async () => {
+  it('redirects from /admin and shows admin navigation', async () => {
     eventTypesApi.eventTypesList.mockResolvedValue([])
-    renderApp('/')
+    renderApp('/admin')
 
     expect(await screen.findByRole('heading', { name: 'Типы встреч' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Типы встреч' })).toHaveAttribute('aria-current', 'page')
