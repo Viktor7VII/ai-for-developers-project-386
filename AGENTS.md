@@ -142,6 +142,14 @@ mise run generate
 
 Use Conventional Commits.
 
+Every implementation commit references its ticket in the issue tracker with a `Refs` line in the commit body, pointing to the ticket file:
+
+```text
+feat: add owner notes to bookings
+
+Refs: .scratch/core-spec/slices/07-owner-notes.md
+```
+
 Allowed commit types:
 
 - `build`
