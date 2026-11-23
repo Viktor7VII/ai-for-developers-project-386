@@ -2,19 +2,30 @@ package com.hexlet.backend.eventtype;
 
 import java.util.List;
 
+import com.hexlet.backend.common.BookingLock;
 import com.hexlet.backend.common.ConflictException;
 import com.hexlet.backend.common.NotFoundException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Service
 public class EventTypeService {
 
 	private final EventTypeRepository repository;
+	private final BookingLock bookingLock;
+	private final TransactionTemplate transactionTemplate;
 
-	public EventTypeService(EventTypeRepository repository) {
+	public EventTypeService(
+			EventTypeRepository repository,
+			BookingLock bookingLock,
+			PlatformTransactionManager transactionManager
+	) {
 		this.repository = repository;
+		this.bookingLock = bookingLock;
+		this.transactionTemplate = new TransactionTemplate(transactionManager);
 	}
 
 	@Transactional(readOnly = true)
@@ -53,17 +64,20 @@ public class EventTypeService {
 	}
 
 	/**
-	 * Deletes an event type that no booking references. A booking created concurrently is still
-	 * caught by the foreign key and reported as a conflict (see ApiExceptionHandler).
+	 * Deletes an event type that no booking references. Runs under the same {@link BookingLock} as
+	 * booking creation and keeps it until the transaction commits (ADR-0002), so "check for bookings +
+	 * delete" can't interleave with "check slot + insert booking".
 	 */
-	@Transactional
 	public void delete(long id) {
-		EventType eventType = findById(id);
-		if (repository.hasBookings(id)) {
-			throw new ConflictException("Event type " + id + " has bookings and cannot be deleted");
-		}
-		repository.delete(eventType);
-		repository.flush();
+		bookingLock.runLocked(() -> transactionTemplate.execute(status -> {
+			EventType eventType = findById(id);
+			if (repository.hasBookings(id)) {
+				throw new ConflictException("Event type " + id + " has bookings and cannot be deleted");
+			}
+			repository.delete(eventType);
+			repository.flush();
+			return null;
+		}));
 	}
 
 	private EventType findById(long id) {

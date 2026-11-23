@@ -5,8 +5,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
+import com.hexlet.backend.common.BookingLock;
 import com.hexlet.backend.common.ConflictException;
 import com.hexlet.backend.eventtype.EventType;
 import com.hexlet.backend.eventtype.EventTypeService;
@@ -26,22 +26,25 @@ public class BookingService {
 	private final Clock clock;
 
 	/**
-	 * Serializes "check availability + insert" so two guests can't book overlapping time (ADR-0002).
-	 * The lock is held until the transaction commits; the unique start constraint is a database-level guard.
+	 * Serializes "check availability + insert" with other bookings and with event type deletion
+	 * (ADR-0002). The lock is held until the transaction commits; the unique start constraint is a
+	 * database-level guard.
 	 */
-	private final ReentrantLock bookingLock = new ReentrantLock();
+	private final BookingLock bookingLock;
 
 	public BookingService(
 			EventTypeService eventTypeService,
 			SlotService slotService,
 			BookingRepository bookingRepository,
 			PlatformTransactionManager transactionManager,
+			BookingLock bookingLock,
 			Clock clock
 	) {
 		this.eventTypeService = eventTypeService;
 		this.slotService = slotService;
 		this.bookingRepository = bookingRepository;
 		this.transactionTemplate = new TransactionTemplate(transactionManager);
+		this.bookingLock = bookingLock;
 		this.clock = clock;
 	}
 
@@ -52,12 +55,8 @@ public class BookingService {
 	}
 
 	public Booking create(String slug, Instant startAt, String guestName, String guestEmail) {
-		bookingLock.lock();
-		try {
-			return transactionTemplate.execute(status -> createInTransaction(slug, startAt, guestName, guestEmail));
-		} finally {
-			bookingLock.unlock();
-		}
+		return bookingLock.runLocked(() ->
+				transactionTemplate.execute(status -> createInTransaction(slug, startAt, guestName, guestEmail)));
 	}
 
 	@Transactional(readOnly = true)
