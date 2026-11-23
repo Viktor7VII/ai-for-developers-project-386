@@ -17,6 +17,7 @@ import { Link } from 'react-router'
 import { eventTypesApi } from '../../shared/api/client'
 import type { EventType } from '../../shared/api/generated'
 import { formatDuration } from '../../shared/lib/datetime'
+import { bookingPath } from '../../shared/lib/bookingLink'
 import { getErrorMessage } from '../../shared/lib/errors'
 
 /** Landing page for guests: lists event types, each leading to its booking link. */
@@ -70,7 +71,7 @@ export function HomePage() {
                       {eventType.description}
                     </Text>
                   )}
-                  <Button component={Link} to={`/book/${eventType.slug}`} mt="auto" w="fit-content">
+                  <Button component={Link} to={bookingPath(eventType.slug)} mt="auto" w="fit-content">
                     Записаться
                   </Button>
                 </Stack>
