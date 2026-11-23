@@ -142,7 +142,7 @@ describe('BookingPage', () => {
     publicBookingApi.publicBookingGetEventType.mockRejectedValue(apiError(404, 'not found'))
     renderApp('/book/unknown')
 
-    expect(await screen.findByRole('heading', { name: 'Встреча не найдена' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Тип встречи не найден' })).toBeInTheDocument()
     expect(publicBookingApi.publicBookingListSlots).not.toHaveBeenCalled()
   })
 })

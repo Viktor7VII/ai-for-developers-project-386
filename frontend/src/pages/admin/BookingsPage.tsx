@@ -84,7 +84,7 @@ export function BookingsPage() {
 
       <Title order={4}>Предстоящие</Title>
       {upcoming.length === 0 ? (
-        <Text c="dimmed">Предстоящих встреч нет.</Text>
+        <Text c="dimmed">Предстоящих записей нет.</Text>
       ) : (
         <BookingsTable bookings={upcoming} />
       )}

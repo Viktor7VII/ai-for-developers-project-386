@@ -67,7 +67,7 @@ export function BookingPage() {
     return (
       <Center mih="100vh" p="md">
         <Stack align="center" gap="xs">
-          <Title order={2}>{notFound ? 'Встреча не найдена' : 'Не удалось загрузить встречу'}</Title>
+          <Title order={2}>{notFound ? 'Тип встречи не найден' : 'Не удалось загрузить тип встречи'}</Title>
           <Text c="dimmed">{notFound ? 'Проверьте ссылку, которую вам прислали.' : eventType.message}</Text>
         </Stack>
       </Center>
@@ -236,7 +236,7 @@ function SlotPicker({ slug, reloadKey, onSelect }: SlotPickerProps) {
         <Stack gap="xs">
           {slots.status === 'loading' && <Loader size="sm" />}
           {slots.status === 'error' && (
-            <Alert color="red" title="Не удалось загрузить свободное время">
+            <Alert color="red" title="Не удалось загрузить слоты">
               {slots.message}
             </Alert>
           )}

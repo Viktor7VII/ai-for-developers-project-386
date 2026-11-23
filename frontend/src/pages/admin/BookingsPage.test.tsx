@@ -57,7 +57,7 @@ describe('BookingsPage', () => {
     bookingsApi.bookingsList.mockResolvedValue([])
     renderApp('/admin/bookings')
 
-    expect(await screen.findByText('Предстоящих встреч нет.')).toBeInTheDocument()
+    expect(await screen.findByText('Предстоящих записей нет.')).toBeInTheDocument()
     expect(screen.queryByRole('table')).not.toBeInTheDocument()
   })
 })
