@@ -163,6 +163,32 @@ mise run e2e
 
 В CI сценарий выполняется отдельной задачей `e2e` после общей проверки.
 
+## Docker и деплой
+
+Приложение собирается в один Docker-образ: бэкенд отдаёт и API, и собранный фронтенд на порту из переменной окружения `PORT` (по умолчанию 8080).
+
+```bash
+docker build -t call-calendar .
+docker run -p 8080:8080 -e PORT=8080 call-calendar
+```
+
+Публичная версия: _ссылка появится после деплоя_ (Render, Docker web service, конфигурация — `render.yaml`).
+
+### Хранение данных
+
+База — встроенная H2 в файле `/app/data/calendar.mv.db` внутри контейнера.
+
+- На бесплатном тарифе Render файловая система контейнера временная: при перезапуске, повторном деплое или «засыпании» сервиса данные сбрасываются к пустой базе.
+- Чтобы данные сохранялись после перезапуска, к сервису подключается постоянный диск (Render Disk, платные тарифы) с точкой монтирования `/app/data`; при локальном запуске — том: `docker run -v call-calendar-data:/app/data …`.
+
+### Render MCP
+
+В репозитории лежит `.mcp.json` с подключением к Render MCP (`https://mcp.render.com/mcp`). Ключ в Git не хранится: заголовок авторизации берётся из переменной окружения `RENDER_API_KEY`.
+
+1. Создайте API-ключ в Render: Account Settings → API Keys.
+2. Задайте переменную окружения `RENDER_API_KEY` в своей системе (не в файлах репозитория).
+3. Перезапустите Claude Code в каталоге проекта и разрешите сервер `render` из `.mcp.json`.
+
 ## Релизы
 
 Версии выпускаются через [release-please](https://github.com/googleapis/release-please): одна версия на весь репозиторий (`version.txt`), общий `CHANGELOG.md` и теги `vX.Y.Z`, первая версия — 0.1.0. После каждого push в `master` workflow `release-please` открывает или обновляет release PR со списком изменений из Conventional Commits; релиз и тег создаются, когда этот PR сливают. Для работы в настройках репозитория должно быть включено Settings → Actions → General → «Allow GitHub Actions to create and approve pull requests».
