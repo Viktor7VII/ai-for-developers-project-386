@@ -135,7 +135,7 @@ model WeeklyInterval {
 
 @doc("Weekly availability of the owner.")
 model Schedule {
-  @doc("IANA time zone of the schedule, e.g. Europe/Moscow.")
+  @doc("IANA time zone identifier of the schedule, e.g. Europe/Moscow or UTC. Fixed offsets such as +03:00 are rejected.")
   @minLength(1)
   @maxLength(64)
   timeZone: string;

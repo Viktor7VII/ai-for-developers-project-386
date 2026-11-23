@@ -161,6 +161,28 @@ class ScheduleControllerTests {
 	}
 
 	@Test
+	void rejectsFixedOffsetTimeZones() throws Exception {
+		for (String zone : new String[] {"+03:00", "UTC+3", "GMT+03:00"}) {
+			putSchedule("""
+					{"timeZone": "%s", "intervals": []}
+					""".formatted(zone))
+					.andExpect(status().isBadRequest())
+					.andExpect(jsonPath("$.message").value(containsString("IANA")));
+		}
+	}
+
+	@Test
+	void acceptsIanaTimeZoneIdentifiers() throws Exception {
+		for (String zone : new String[] {"UTC", "Europe/Moscow", "Asia/Yekaterinburg"}) {
+			putSchedule("""
+					{"timeZone": "%s", "intervals": []}
+					""".formatted(zone))
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$.timeZone").value(zone));
+		}
+	}
+
+	@Test
 	void rejectsMissingFields() throws Exception {
 		putSchedule("""
 				{"intervals": [{"dayOfWeek": "MONDAY", "startTime": "09:00"}]}

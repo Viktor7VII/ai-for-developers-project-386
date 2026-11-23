@@ -28,7 +28,7 @@ import {
  */
 export interface Schedule {
     /**
-     * IANA time zone of the schedule, e.g. Europe/Moscow.
+     * IANA time zone identifier of the schedule, e.g. Europe/Moscow or UTC. Fixed offsets such as +03:00 are rejected.
      */
     timeZone: string;
     /**
