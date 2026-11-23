@@ -6,6 +6,8 @@ name: release-please
 # which is fine because the PR only changes version.txt and CHANGELOG.md, and merging it is a
 # regular push to master that runs project-check and hexlet-check.
 on:
+  # Manual run, e.g. to recreate the release PR without a new commit.
+  workflow_dispatch:
   push:
     branches:
       - master
