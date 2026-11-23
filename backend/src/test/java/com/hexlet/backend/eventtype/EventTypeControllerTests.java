@@ -1,5 +1,10 @@
 package com.hexlet.backend.eventtype;
 
+import java.time.Instant;
+
+import com.hexlet.backend.booking.Booking;
+import com.hexlet.backend.booking.BookingRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -32,8 +38,12 @@ class EventTypeControllerTests {
 	@Autowired
 	private EventTypeRepository repository;
 
+	@Autowired
+	private BookingRepository bookingRepository;
+
 	@BeforeEach
 	void cleanDatabase() {
+		bookingRepository.deleteAll();
 		repository.deleteAll();
 	}
 
@@ -177,5 +187,40 @@ class EventTypeControllerTests {
 	void rejectsNonNumericId() throws Exception {
 		mockMvc.perform(get("/api/event-types/abc"))
 				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	void deletesEventTypeWithoutBookings() throws Exception {
+		EventType saved = repository.save(new EventType("intro", "Знакомство", null, 15));
+
+		mockMvc.perform(delete("/api/event-types/{id}", saved.getId()))
+				.andExpect(status().isNoContent());
+
+		mockMvc.perform(get("/api/event-types/{id}", saved.getId()))
+				.andExpect(status().isNotFound());
+		mockMvc.perform(get("/api/public/event-types/intro"))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void refusesToDeleteEventTypeWithBookings() throws Exception {
+		EventType saved = repository.save(new EventType("intro", "Знакомство", null, 15));
+		// A past booking blocks deletion as well as a future one.
+		Instant start = Instant.parse("2026-01-05T09:00:00Z");
+		bookingRepository.save(new Booking(saved, "Гость", "guest@example.com",
+				start, start.plusSeconds(15 * 60), start.minusSeconds(3600)));
+
+		mockMvc.perform(delete("/api/event-types/{id}", saved.getId()))
+				.andExpect(status().isConflict())
+				.andExpect(jsonPath("$.message").value(containsString("has bookings")));
+
+		mockMvc.perform(get("/api/event-types/{id}", saved.getId()))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	void returnsNotFoundWhenDeletingMissingEventType() throws Exception {
+		mockMvc.perform(delete("/api/event-types/{id}", 999_999))
+				.andExpect(status().isNotFound());
 	}
 }

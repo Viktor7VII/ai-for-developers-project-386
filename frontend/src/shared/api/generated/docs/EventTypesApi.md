@@ -5,6 +5,7 @@ All URIs are relative to *http://localhost:8080*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**eventTypesCreate**](EventTypesApi.md#eventtypescreate) | **POST** /api/event-types |  |
+| [**eventTypesDelete**](EventTypesApi.md#eventtypesdelete) | **DELETE** /api/event-types/{id} |  |
 | [**eventTypesGet**](EventTypesApi.md#eventtypesget) | **GET** /api/event-types/{id} |  |
 | [**eventTypesList**](EventTypesApi.md#eventtypeslist) | **GET** /api/event-types |  |
 | [**eventTypesUpdate**](EventTypesApi.md#eventtypesupdate) | **PUT** /api/event-types/{id} |  |
@@ -13,7 +14,7 @@ All URIs are relative to *http://localhost:8080*
 
 ## eventTypesCreate
 
-> EventType eventTypesCreate(eventType)
+> EventType eventTypesCreate(eventTypeInput)
 
 
 
@@ -33,8 +34,8 @@ async function example() {
   const api = new EventTypesApi();
 
   const body = {
-    // EventType
-    eventType: ...,
+    // EventTypeInput
+    eventTypeInput: ...,
   } satisfies EventTypesCreateRequest;
 
   try {
@@ -54,7 +55,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **eventType** | [EventType](EventType.md) |  | |
+| **eventTypeInput** | [EventTypeInput](EventTypeInput.md) |  | |
 
 ### Return type
 
@@ -75,6 +76,75 @@ No authorization required
 |-------------|-------------|------------------|
 | **201** | The request has succeeded and a new resource has been created as a result. |  -  |
 | **400** | Bad request: validation failed. |  -  |
+| **409** | Conflict with existing data. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## eventTypesDelete
+
+> eventTypesDelete(id)
+
+
+
+Delete an event type. Allowed only when no bookings reference it; otherwise 409.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  EventTypesApi,
+} from '';
+import type { EventTypesDeleteRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new EventTypesApi();
+
+  const body = {
+    // number
+    id: 789,
+  } satisfies EventTypesDeleteRequest;
+
+  try {
+    const data = await api.eventTypesDelete(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `number` |  | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **204** | There is no content to send for this request, but the headers may be useful.  |  -  |
+| **404** | Resource not found. |  -  |
 | **409** | Conflict with existing data. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -209,7 +279,7 @@ No authorization required
 
 ## eventTypesUpdate
 
-> EventType eventTypesUpdate(id, eventType)
+> EventType eventTypesUpdate(id, eventTypeInput)
 
 
 
@@ -231,8 +301,8 @@ async function example() {
   const body = {
     // number
     id: 789,
-    // EventType
-    eventType: ...,
+    // EventTypeInput
+    eventTypeInput: ...,
   } satisfies EventTypesUpdateRequest;
 
   try {
@@ -253,7 +323,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `number` |  | [Defaults to `undefined`] |
-| **eventType** | [EventType](EventType.md) |  | |
+| **eventTypeInput** | [EventTypeInput](EventTypeInput.md) |  | |
 
 ### Return type
 

@@ -1,5 +1,7 @@
 package com.hexlet.backend.common;
 
+import com.hexlet.backend.api.model.ErrorResponse;
+
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 /**
  * Maps exceptions to the {@code ErrorResponse} format defined in the API contract.
@@ -48,6 +51,17 @@ public class ApiExceptionHandler {
 	public ErrorResponse handleValidation(MethodArgumentNotValidException e) {
 		String message = e.getBindingResult().getFieldErrors().stream()
 				.map(error -> error.getField() + ": " + error.getDefaultMessage())
+				.sorted()
+				.collect(Collectors.joining("; "));
+		return new ErrorResponse(message.isEmpty() ? "Validation failed" : message);
+	}
+
+	// Constraint violations on parameters of the generated @Validated API interfaces.
+	@ExceptionHandler(HandlerMethodValidationException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorResponse handleMethodValidation(HandlerMethodValidationException e) {
+		String message = e.getAllErrors().stream()
+				.map(error -> error.getDefaultMessage())
 				.sorted()
 				.collect(Collectors.joining("; "));
 		return new ErrorResponse(message.isEmpty() ? "Validation failed" : message);

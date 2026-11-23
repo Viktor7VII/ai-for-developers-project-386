@@ -121,11 +121,14 @@ npm run lint
 - OpenAPI output is generated from the TypeSpec contract.
 - The TypeScript SDK is generated from the OpenAPI specification.
 - Never edit files in `frontend/src/shared/api/generated/` manually.
-- When changing the API contract, regenerate OpenAPI and the SDK by running:
+- The backend API interfaces and DTOs are generated from the same OpenAPI by the Maven plugin into `backend/target/generated-sources/openapi` (packages `com.hexlet.backend.api` and `com.hexlet.backend.api.model`, not committed). Controllers implement the generated interfaces; business logic stays in hand-written code (ADR-0003).
+- When changing the API contract, regenerate OpenAPI, the SDK and the server interfaces, then commit the regenerated `contracts/openapi/` and SDK together with the contract change:
 
 ```bash
-mise run check
+mise run generate
 ```
+
+- In CI, `mise run check` fails if the committed generated files differ from a fresh generation (modified, deleted or new files).
 
 - Keep the backend API behavior consistent with the contract.
 

@@ -81,7 +81,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventType'
+              $ref: '#/components/schemas/EventTypeInput'
   /api/event-types/{id}:
     get:
       operationId: EventTypes_get
@@ -150,7 +150,34 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventType'
+              $ref: '#/components/schemas/EventTypeInput'
+    delete:
+      operationId: EventTypes_delete
+      description: Delete an event type. Allowed only when no bookings reference it; otherwise 409.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict with existing data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - EventTypes
   /api/public/event-types/{slug}:
     get:
       operationId: PublicBooking_getEventType
@@ -403,7 +430,6 @@ components:
         id:
           type: integer
           format: int64
-          readOnly: true
         slug:
           type: string
           minLength: 1
@@ -414,6 +440,8 @@ components:
           type: string
           minLength: 1
           maxLength: 200
+          pattern: ^[\s\S]*\S[\s\S]*$
+          description: Must contain at least one non-whitespace character.
         description:
           type: string
           maxLength: 2000
@@ -423,7 +451,36 @@ components:
           minimum: 5
           maximum: 720
           description: Meeting duration in minutes.
-      description: A type of meeting that visitors can book.
+      description: A type of meeting that guests can book.
+    EventTypeInput:
+      type: object
+      required:
+        - slug
+        - title
+        - durationMinutes
+      properties:
+        slug:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+          description: Unique URL-friendly identifier used in the public booking link.
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: ^[\s\S]*\S[\s\S]*$
+          description: Must contain at least one non-whitespace character.
+        description:
+          type: string
+          maxLength: 2000
+        durationMinutes:
+          type: integer
+          format: int32
+          minimum: 5
+          maximum: 720
+          description: Meeting duration in minutes.
+      description: Event type data sent by the owner when creating or updating an event type.
     HealthResponse:
       type: object
       required:

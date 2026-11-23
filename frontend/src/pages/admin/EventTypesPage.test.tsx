@@ -7,6 +7,7 @@ const { eventTypesApi } = vi.hoisted(() => ({
     eventTypesList: vi.fn(),
     eventTypesCreate: vi.fn(),
     eventTypesUpdate: vi.fn(),
+    eventTypesDelete: vi.fn(),
   },
 }))
 
@@ -65,7 +66,7 @@ describe('EventTypesPage', () => {
 
     await waitFor(() =>
       expect(eventTypesApi.eventTypesCreate).toHaveBeenCalledWith({
-        eventType: {
+        eventTypeInput: {
           title: 'Консультация',
           slug: 'konsultatsiya',
           description: undefined,
@@ -122,7 +123,7 @@ describe('EventTypesPage', () => {
     await waitFor(() =>
       expect(eventTypesApi.eventTypesUpdate).toHaveBeenCalledWith({
         id: 1,
-        eventType: {
+        eventTypeInput: {
           title: 'Консультация!',
           slug: 'consultation',
           description: 'Обсудим ваш проект',
@@ -137,5 +138,31 @@ describe('EventTypesPage', () => {
     renderApp('/admin/event-types')
 
     expect(await screen.findByText('Boom')).toBeInTheDocument()
+  })
+
+  it('deletes an event type after confirmation', async () => {
+    eventTypesApi.eventTypesList.mockResolvedValueOnce([consultation]).mockResolvedValueOnce([])
+    eventTypesApi.eventTypesDelete.mockResolvedValue(undefined)
+    const { user } = renderApp('/admin/event-types')
+
+    await user.click(await screen.findByRole('button', { name: 'Удалить' }))
+    const dialog = screen.getByRole('dialog')
+    expect(within(dialog).getByText(/Консультация/)).toBeInTheDocument()
+    await user.click(within(dialog).getByRole('button', { name: 'Удалить' }))
+
+    await waitFor(() => expect(eventTypesApi.eventTypesDelete).toHaveBeenCalledWith({ id: 1 }))
+    expect(await screen.findByText(/Пока нет ни одного типа встречи/)).toBeInTheDocument()
+  })
+
+  it('explains why an event type with bookings cannot be deleted', async () => {
+    eventTypesApi.eventTypesList.mockResolvedValue([consultation])
+    eventTypesApi.eventTypesDelete.mockRejectedValue(apiError(409, 'Event type 1 has bookings'))
+    const { user } = renderApp('/admin/event-types')
+
+    await user.click(await screen.findByRole('button', { name: 'Удалить' }))
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Удалить' }))
+
+    expect(await screen.findByText(/по нему уже есть записи/)).toBeInTheDocument()
+    expect(screen.getByText('Консультация')).toBeInTheDocument()
   })
 })

@@ -89,8 +89,8 @@ function EventTypeForm({ eventType, onCancel, onSaved }: EventTypeFormProps) {
     }
     try {
       const saved = eventType
-        ? await eventTypesApi.eventTypesUpdate({ id: eventType.id, eventType: payload })
-        : await eventTypesApi.eventTypesCreate({ eventType: payload })
+        ? await eventTypesApi.eventTypesUpdate({ id: eventType.id, eventTypeInput: payload })
+        : await eventTypesApi.eventTypesCreate({ eventTypeInput: payload })
       onSaved(saved)
     } catch (e) {
       const message = await getErrorMessage(e)

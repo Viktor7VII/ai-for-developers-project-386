@@ -18,20 +18,13 @@ public class EventTypeService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<EventTypeResponse> list() {
-		return repository.findAllByOrderByIdAsc().stream()
-				.map(EventTypeResponse::from)
-				.toList();
+	public List<EventType> list() {
+		return repository.findAllByOrderByIdAsc();
 	}
 
 	@Transactional(readOnly = true)
-	public EventTypeResponse get(long id) {
-		return EventTypeResponse.from(findById(id));
-	}
-
-	@Transactional(readOnly = true)
-	public EventTypeResponse getBySlug(String slug) {
-		return EventTypeResponse.from(findBySlug(slug));
+	public EventType get(long id) {
+		return findById(id);
 	}
 
 	@Transactional(readOnly = true)
@@ -41,32 +34,36 @@ public class EventTypeService {
 	}
 
 	@Transactional
-	public EventTypeResponse create(EventTypeRequest request) {
-		if (repository.existsBySlug(request.slug())) {
-			throw slugTaken(request.slug());
+	public EventType create(String slug, String title, String description, int durationMinutes) {
+		if (repository.existsBySlug(slug)) {
+			throw slugTaken(slug);
 		}
-		EventType eventType = new EventType(
-				request.slug(),
-				request.title().strip(),
-				normalizeDescription(request.description()),
-				request.durationMinutes()
-		);
-		return EventTypeResponse.from(repository.saveAndFlush(eventType));
+		EventType eventType = new EventType(slug, title.strip(), normalizeDescription(description), durationMinutes);
+		return repository.saveAndFlush(eventType);
 	}
 
 	@Transactional
-	public EventTypeResponse update(long id, EventTypeRequest request) {
+	public EventType update(long id, String slug, String title, String description, int durationMinutes) {
 		EventType eventType = findById(id);
-		if (repository.existsBySlugAndIdNot(request.slug(), id)) {
-			throw slugTaken(request.slug());
+		if (repository.existsBySlugAndIdNot(slug, id)) {
+			throw slugTaken(slug);
 		}
-		eventType.update(
-				request.slug(),
-				request.title().strip(),
-				normalizeDescription(request.description()),
-				request.durationMinutes()
-		);
-		return EventTypeResponse.from(repository.saveAndFlush(eventType));
+		eventType.update(slug, title.strip(), normalizeDescription(description), durationMinutes);
+		return repository.saveAndFlush(eventType);
+	}
+
+	/**
+	 * Deletes an event type that no booking references. A booking created concurrently is still
+	 * caught by the foreign key and reported as a conflict (see ApiExceptionHandler).
+	 */
+	@Transactional
+	public void delete(long id) {
+		EventType eventType = findById(id);
+		if (repository.hasBookings(id)) {
+			throw new ConflictException("Event type " + id + " has bookings and cannot be deleted");
+		}
+		repository.delete(eventType);
+		repository.flush();
 	}
 
 	private EventType findById(long id) {

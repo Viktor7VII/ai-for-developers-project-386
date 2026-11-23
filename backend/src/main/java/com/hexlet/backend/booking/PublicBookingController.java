@@ -3,7 +3,7 @@ package com.hexlet.backend.booking;
 import java.time.Instant;
 import java.util.List;
 
-import com.hexlet.backend.eventtype.EventTypeResponse;
+import com.hexlet.backend.eventtype.EventTypeMapper;
 import com.hexlet.backend.eventtype.EventTypeService;
 
 import jakarta.validation.Valid;
@@ -34,8 +34,8 @@ public class PublicBookingController {
 	}
 
 	@GetMapping
-	public EventTypeResponse getEventType(@PathVariable String slug) {
-		return eventTypeService.getBySlug(slug);
+	public com.hexlet.backend.api.model.EventType getEventType(@PathVariable String slug) {
+		return EventTypeMapper.toDto(eventTypeService.findBySlug(slug));
 	}
 
 	@GetMapping("/slots")

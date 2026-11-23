@@ -12,6 +12,7 @@ docs/DayOfWeek.md
 docs/DefaultApi.md
 docs/ErrorResponse.md
 docs/EventType.md
+docs/EventTypeInput.md
 docs/EventTypesApi.md
 docs/HealthResponse.md
 docs/PublicBookingApi.md
@@ -26,6 +27,7 @@ models/BookingStatus.ts
 models/DayOfWeek.ts
 models/ErrorResponse.ts
 models/EventType.ts
+models/EventTypeInput.ts
 models/HealthResponse.ts
 models/Schedule.ts
 models/TimeSlot.ts

@@ -14,7 +14,7 @@
 
 import { mapValues } from '../runtime';
 /**
- * A type of meeting that visitors can book.
+ * A type of meeting that guests can book.
  * @export
  * @interface EventType
  */
@@ -22,13 +22,13 @@ export interface EventType {
     /**
      * 
      */
-    readonly id: number;
+    id: number;
     /**
      * Unique URL-friendly identifier used in the public booking link.
      */
     slug: string;
     /**
-     * 
+     * Must contain at least one non-whitespace character.
      */
     title: string;
     /**
@@ -74,13 +74,14 @@ export function EventTypeToJSON(json: any): EventType {
     return EventTypeToJSONTyped(json, false);
 }
 
-export function EventTypeToJSONTyped(value?: Omit<EventType, 'id'> | null, ignoreDiscriminator: boolean = false): any {
+export function EventTypeToJSONTyped(value?: EventType | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
 
     return {
         
+        'id': value['id'],
         'slug': value['slug'],
         'title': value['title'],
         'description': value['description'],

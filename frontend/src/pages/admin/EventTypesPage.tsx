@@ -13,6 +13,7 @@ import {
   Title,
 } from '@mantine/core'
 import { useEffect, useState } from 'react'
+import { DeleteEventTypeModal } from '../../features/event-type-delete/DeleteEventTypeModal'
 import { EventTypeFormModal } from '../../features/event-type-form/EventTypeFormModal'
 import { eventTypesApi } from '../../shared/api/client'
 import type { EventType } from '../../shared/api/generated'
@@ -28,6 +29,7 @@ export function EventTypesPage() {
   const [error, setError] = useState<string | null>(null)
   const [modalOpened, setModalOpened] = useState(false)
   const [editing, setEditing] = useState<EventType | null>(null)
+  const [deleting, setDeleting] = useState<EventType | null>(null)
 
   // Incremented to reload the list after saving.
   const [reloadKey, setReloadKey] = useState(0)
@@ -108,6 +110,9 @@ export function EventTypesPage() {
                   <Button size="xs" variant="default" onClick={() => openEdit(eventType)}>
                     Изменить
                   </Button>
+                  <Button size="xs" variant="subtle" color="red" onClick={() => setDeleting(eventType)}>
+                    Удалить
+                  </Button>
                 </Group>
               </Stack>
             </Card>
@@ -120,6 +125,15 @@ export function EventTypesPage() {
         eventType={editing}
         onClose={() => setModalOpened(false)}
         onSaved={handleSaved}
+      />
+
+      <DeleteEventTypeModal
+        eventType={deleting}
+        onClose={() => setDeleting(null)}
+        onDeleted={() => {
+          setDeleting(null)
+          setReloadKey((key) => key + 1)
+        }}
       />
     </Stack>
   )

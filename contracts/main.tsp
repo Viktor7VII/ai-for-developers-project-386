@@ -40,19 +40,24 @@ model ConflictError {
   @body body: ErrorResponse;
 }
 
-@doc("A type of meeting that visitors can book.")
+@doc("A type of meeting that guests can book.")
 model EventType {
-  @visibility(Lifecycle.Read)
   id: int64;
+  ...EventTypeInput;
+}
 
+@doc("Event type data sent by the owner when creating or updating an event type.")
+model EventTypeInput {
   @doc("Unique URL-friendly identifier used in the public booking link.")
   @minLength(1)
   @maxLength(100)
   @pattern("^[a-z0-9]+(?:-[a-z0-9]+)*$")
   slug: string;
 
+  @doc("Must contain at least one non-whitespace character.")
   @minLength(1)
   @maxLength(200)
+  @pattern("^[\\s\\S]*\\S[\\s\\S]*$")
   title: string;
 
   @maxLength(2000)
@@ -77,7 +82,7 @@ interface EventTypes {
 
   @doc("Create a new event type.")
   @post
-  create(@body eventType: EventType):
+  create(@body eventType: EventTypeInput):
     | {
         @statusCode statusCode: 201;
         @body body: EventType;
@@ -87,9 +92,18 @@ interface EventTypes {
 
   @doc("Update an existing event type.")
   @put
-  update(@path id: int64, @body eventType: EventType):
+  update(@path id: int64, @body eventType: EventTypeInput):
     | EventType
     | BadRequestError
+    | NotFoundError
+    | ConflictError;
+
+  @doc("Delete an event type. Allowed only when no bookings reference it; otherwise 409.")
+  @delete
+  delete(@path id: int64):
+    | {
+        @statusCode statusCode: 204;
+      }
     | NotFoundError
     | ConflictError;
 }

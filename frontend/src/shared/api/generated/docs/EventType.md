@@ -1,7 +1,7 @@
 
 # EventType
 
-A type of meeting that visitors can book.
+A type of meeting that guests can book.
 
 ## Properties
 

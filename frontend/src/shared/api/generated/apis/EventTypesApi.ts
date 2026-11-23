@@ -23,12 +23,24 @@ import {
     EventTypeFromJSON,
     EventTypeToJSON,
 } from '../models/EventType';
+import {
+    type EventTypeInput,
+    EventTypeInputFromJSON,
+    EventTypeInputToJSON,
+} from '../models/EventTypeInput';
 
 export interface EventTypesCreateRequest {
     /**
      * 
      */
-    eventType: Omit<EventType, 'id'>;
+    eventTypeInput: EventTypeInput;
+}
+
+export interface EventTypesDeleteRequest {
+    /**
+     * 
+     */
+    id: number;
 }
 
 export interface EventTypesGetRequest {
@@ -46,7 +58,7 @@ export interface EventTypesUpdateRequest {
     /**
      * 
      */
-    eventType: Omit<EventType, 'id'>;
+    eventTypeInput: EventTypeInput;
 }
 
 /**
@@ -58,10 +70,10 @@ export class EventTypesApi extends runtime.BaseAPI {
      * Creates request options for eventTypesCreate without sending the request
      */
     async eventTypesCreateRequestOpts(requestParameters: EventTypesCreateRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['eventType'] == null) {
+        if (requestParameters['eventTypeInput'] == null) {
             throw new runtime.RequiredError(
-                'eventType',
-                'Required parameter "eventType" was null or undefined when calling eventTypesCreate().'
+                'eventTypeInput',
+                'Required parameter "eventTypeInput" was null or undefined when calling eventTypesCreate().'
             );
         }
 
@@ -79,7 +91,7 @@ export class EventTypesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: EventTypeToJSON(requestParameters['eventType']),
+            body: EventTypeInputToJSON(requestParameters['eventTypeInput']),
         };
     }
 
@@ -99,6 +111,50 @@ export class EventTypesApi extends runtime.BaseAPI {
     async eventTypesCreate(requestParameters: EventTypesCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EventType> {
         const response = await this.eventTypesCreateRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Creates request options for eventTypesDelete without sending the request
+     */
+    async eventTypesDeleteRequestOpts(requestParameters: EventTypesDeleteRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling eventTypesDelete().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/api/event-types/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Delete an event type. Allowed only when no bookings reference it; otherwise 409.
+     */
+    async eventTypesDeleteRaw(requestParameters: EventTypesDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.eventTypesDeleteRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete an event type. Allowed only when no bookings reference it; otherwise 409.
+     */
+    async eventTypesDelete(requestParameters: EventTypesDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.eventTypesDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -194,10 +250,10 @@ export class EventTypesApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['eventType'] == null) {
+        if (requestParameters['eventTypeInput'] == null) {
             throw new runtime.RequiredError(
-                'eventType',
-                'Required parameter "eventType" was null or undefined when calling eventTypesUpdate().'
+                'eventTypeInput',
+                'Required parameter "eventTypeInput" was null or undefined when calling eventTypesUpdate().'
             );
         }
 
@@ -216,7 +272,7 @@ export class EventTypesApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: EventTypeToJSON(requestParameters['eventType']),
+            body: EventTypeInputToJSON(requestParameters['eventTypeInput']),
         };
     }
 

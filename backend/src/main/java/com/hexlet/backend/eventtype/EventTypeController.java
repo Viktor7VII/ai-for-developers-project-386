@@ -2,21 +2,19 @@ package com.hexlet.backend.eventtype;
 
 import java.util.List;
 
-import jakarta.validation.Valid;
+import com.hexlet.backend.api.EventTypesApi;
+import com.hexlet.backend.api.model.EventTypeInput;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Owner operations on event types. Paths, parameters and validation come from the generated
+ * {@link EventTypesApi} (contract-first, ADR-0003).
+ */
 @RestController
-@RequestMapping("/api/event-types")
-public class EventTypeController {
+public class EventTypeController implements EventTypesApi {
 
 	private final EventTypeService service;
 
@@ -24,24 +22,33 @@ public class EventTypeController {
 		this.service = service;
 	}
 
-	@GetMapping
-	public List<EventTypeResponse> list() {
-		return service.list();
+	@Override
+	public ResponseEntity<List<com.hexlet.backend.api.model.EventType>> eventTypesList() {
+		return ResponseEntity.ok(service.list().stream().map(EventTypeMapper::toDto).toList());
 	}
 
-	@GetMapping("/{id}")
-	public EventTypeResponse get(@PathVariable long id) {
-		return service.get(id);
+	@Override
+	public ResponseEntity<com.hexlet.backend.api.model.EventType> eventTypesGet(Long id) {
+		return ResponseEntity.ok(EventTypeMapper.toDto(service.get(id)));
 	}
 
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public EventTypeResponse create(@Valid @RequestBody EventTypeRequest request) {
-		return service.create(request);
+	@Override
+	public ResponseEntity<com.hexlet.backend.api.model.EventType> eventTypesCreate(EventTypeInput input) {
+		EventType created = service.create(
+				input.getSlug(), input.getTitle(), input.getDescription(), input.getDurationMinutes());
+		return ResponseEntity.status(HttpStatus.CREATED).body(EventTypeMapper.toDto(created));
 	}
 
-	@PutMapping("/{id}")
-	public EventTypeResponse update(@PathVariable long id, @Valid @RequestBody EventTypeRequest request) {
-		return service.update(id, request);
+	@Override
+	public ResponseEntity<com.hexlet.backend.api.model.EventType> eventTypesUpdate(Long id, EventTypeInput input) {
+		EventType updated = service.update(
+				id, input.getSlug(), input.getTitle(), input.getDescription(), input.getDurationMinutes());
+		return ResponseEntity.ok(EventTypeMapper.toDto(updated));
+	}
+
+	@Override
+	public ResponseEntity<Void> eventTypesDelete(Long id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }
