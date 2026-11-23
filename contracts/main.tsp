@@ -172,8 +172,10 @@ model BookingRequest {
   @doc("Start of the selected slot. Must be one of the slots returned by the slots endpoint.")
   startAt: utcDateTime;
 
+  @doc("Must contain at least one non-whitespace character.")
   @minLength(1)
   @maxLength(200)
+  @pattern("^[\\s\\S]*\\S[\\s\\S]*$")
   guestName: string;
 
   @minLength(3)
@@ -204,17 +206,13 @@ interface PublicBooking {
   getEventType(@path slug: string): EventType | NotFoundError;
 
   @doc("""
-    List free slots for an event type that start within [from, to).
-    Slots in the past and slots overlapping existing bookings are excluded.
-    The range must not exceed 62 days.
+    List all free slots of the event type within the booking window:
+    today and the next 13 calendar days in the owner time zone.
+    Slots that already started and slots overlapping existing bookings are excluded.
     """)
   @route("/slots")
   @get
-  listSlots(
-    @path slug: string,
-    @query from: utcDateTime,
-    @query to: utcDateTime,
-  ): TimeSlot[] | BadRequestError | NotFoundError;
+  listSlots(@path slug: string): TimeSlot[] | NotFoundError;
 
   @doc("""
     Book a slot. Availability is re-checked on the server;

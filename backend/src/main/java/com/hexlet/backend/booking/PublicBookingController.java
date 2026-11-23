@@ -1,29 +1,22 @@
 package com.hexlet.backend.booking;
 
-import java.time.Instant;
 import java.util.List;
 
+import com.hexlet.backend.api.PublicBookingApi;
+import com.hexlet.backend.api.model.BookingRequest;
 import com.hexlet.backend.eventtype.EventTypeMapper;
 import com.hexlet.backend.eventtype.EventTypeService;
 
-import jakarta.validation.Valid;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Endpoints for visitors. No registration is required.
+ * Endpoints for guests, no registration required. Paths, parameters and field validation come from
+ * the generated {@link PublicBookingApi} (contract-first, ADR-0003).
  */
 @RestController
-@RequestMapping("/api/public/event-types/{slug}")
-public class PublicBookingController {
+public class PublicBookingController implements PublicBookingApi {
 
 	private final EventTypeService eventTypeService;
 	private final BookingService bookingService;
@@ -33,23 +26,21 @@ public class PublicBookingController {
 		this.bookingService = bookingService;
 	}
 
-	@GetMapping
-	public com.hexlet.backend.api.model.EventType getEventType(@PathVariable String slug) {
-		return EventTypeMapper.toDto(eventTypeService.findBySlug(slug));
+	@Override
+	public ResponseEntity<com.hexlet.backend.api.model.EventType> publicBookingGetEventType(String slug) {
+		return ResponseEntity.ok(EventTypeMapper.toDto(eventTypeService.findBySlug(slug)));
 	}
 
-	@GetMapping("/slots")
-	public List<TimeSlot> listSlots(
-			@PathVariable String slug,
-			@RequestParam Instant from,
-			@RequestParam Instant to
-	) {
-		return bookingService.listFreeSlots(slug, from, to);
+	@Override
+	public ResponseEntity<List<com.hexlet.backend.api.model.TimeSlot>> publicBookingListSlots(String slug) {
+		return ResponseEntity.ok(bookingService.listFreeSlots(slug).stream().map(BookingMapper::toDto).toList());
 	}
 
-	@PostMapping("/bookings")
-	@ResponseStatus(HttpStatus.CREATED)
-	public BookingResponse createBooking(@PathVariable String slug, @Valid @RequestBody BookingRequest request) {
-		return bookingService.create(slug, request);
+	@Override
+	public ResponseEntity<com.hexlet.backend.api.model.Booking> publicBookingCreateBooking(
+			String slug, BookingRequest request) {
+		Booking booking = bookingService.create(
+				slug, request.getStartAt().toInstant(), request.getGuestName(), request.getGuestEmail());
+		return ResponseEntity.status(HttpStatus.CREATED).body(BookingMapper.toDto(booking));
 	}
 }

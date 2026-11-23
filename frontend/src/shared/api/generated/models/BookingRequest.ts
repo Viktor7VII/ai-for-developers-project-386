@@ -24,7 +24,7 @@ export interface BookingRequest {
      */
     startAt: Date;
     /**
-     * 
+     * Must contain at least one non-whitespace character.
      */
     guestName: string;
     /**

@@ -62,14 +62,6 @@ export interface PublicBookingListSlotsRequest {
      * 
      */
     slug: string;
-    /**
-     * 
-     */
-    from: Date;
-    /**
-     * 
-     */
-    to: Date;
 }
 
 /**
@@ -188,29 +180,7 @@ export class PublicBookingApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['from'] == null) {
-            throw new runtime.RequiredError(
-                'from',
-                'Required parameter "from" was null or undefined when calling publicBookingListSlots().'
-            );
-        }
-
-        if (requestParameters['to'] == null) {
-            throw new runtime.RequiredError(
-                'to',
-                'Required parameter "to" was null or undefined when calling publicBookingListSlots().'
-            );
-        }
-
         const queryParameters: any = {};
-
-        if (requestParameters['from'] != null) {
-            queryParameters['from'] = runtime.serializeDateTime(requestParameters['from'] as any);
-        }
-
-        if (requestParameters['to'] != null) {
-            queryParameters['to'] = runtime.serializeDateTime(requestParameters['to'] as any);
-        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -227,7 +197,7 @@ export class PublicBookingApi extends runtime.BaseAPI {
     }
 
     /**
-     * List free slots for an event type that start within [from, to). Slots in the past and slots overlapping existing bookings are excluded. The range must not exceed 62 days.
+     * List all free slots of the event type within the booking window: today and the next 13 calendar days in the owner time zone. Slots that already started and slots overlapping existing bookings are excluded.
      */
     async publicBookingListSlotsRaw(requestParameters: PublicBookingListSlotsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TimeSlot>>> {
         const requestOptions = await this.publicBookingListSlotsRequestOpts(requestParameters);
@@ -237,7 +207,7 @@ export class PublicBookingApi extends runtime.BaseAPI {
     }
 
     /**
-     * List free slots for an event type that start within [from, to). Slots in the past and slots overlapping existing bookings are excluded. The range must not exceed 62 days.
+     * List all free slots of the event type within the booking window: today and the next 13 calendar days in the owner time zone. Slots that already started and slots overlapping existing bookings are excluded.
      */
     async publicBookingListSlots(requestParameters: PublicBookingListSlotsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TimeSlot>> {
         const response = await this.publicBookingListSlotsRaw(requestParameters, initOverrides);

@@ -252,29 +252,15 @@ paths:
     get:
       operationId: PublicBooking_listSlots
       description: |-
-        List free slots for an event type that start within [from, to).
-        Slots in the past and slots overlapping existing bookings are excluded.
-        The range must not exceed 62 days.
+        List all free slots of the event type within the booking window:
+        today and the next 13 calendar days in the owner time zone.
+        Slots that already started and slots overlapping existing bookings are excluded.
       parameters:
         - name: slug
           in: path
           required: true
           schema:
             type: string
-        - name: from
-          in: query
-          required: true
-          schema:
-            type: string
-            format: date-time
-          explode: false
-        - name: to
-          in: query
-          required: true
-          schema:
-            type: string
-            format: date-time
-          explode: false
       responses:
         '200':
           description: The request has succeeded.
@@ -284,12 +270,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TimeSlot'
-        '400':
-          description: 'Bad request: validation failed.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Resource not found.
           content:
@@ -391,6 +371,8 @@ components:
           type: string
           minLength: 1
           maxLength: 200
+          pattern: ^[\s\S]*\S[\s\S]*$
+          description: Must contain at least one non-whitespace character.
         guestEmail:
           type: string
           minLength: 3

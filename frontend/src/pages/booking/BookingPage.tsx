@@ -164,35 +164,30 @@ interface SlotPickerProps {
 }
 
 function SlotPicker({ slug, reloadKey, onSelect }: SlotPickerProps) {
-  const [month, setMonth] = useState(() => dayjs().startOf('month').format('YYYY-MM-DD'))
+  // Month shown in the calendar; null until the guest navigates (then the active day's month is shown).
+  const [month, setMonth] = useState<string | null>(null)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  // The server returns all free slots of the booking window (14 days) in one request.
   // The loaded result is stored with the request it belongs to; a result for another
-  // request (previous month, before reload) means the current one is still loading.
-  const requestKey = `${slug}|${month}|${reloadKey}`
+  // request (before a reload) means the current one is still loading.
+  const requestKey = `${slug}|${reloadKey}`
   const [result, setResult] = useState<{ key: string; state: LoadState<TimeSlot[]> } | null>(null)
 
   useEffect(() => {
     let cancelled = false
-    const monthStart = dayjs(month).startOf('month')
-    const now = dayjs()
-    const from = monthStart.isBefore(now) ? now : monthStart
-    const to = monthStart.add(1, 'month')
     const finish = (state: LoadState<TimeSlot[]>) => {
       if (!cancelled) {
         setResult({ key: requestKey, state })
       }
     }
-    // A month entirely in the past has no slots: nothing to request.
-    const request = to.isAfter(from)
-      ? publicBookingApi.publicBookingListSlots({ slug, from: from.toDate(), to: to.toDate() })
-      : Promise.resolve([])
-    request
+    publicBookingApi
+      .publicBookingListSlots({ slug })
       .then((data) => finish({ status: 'ready', data }))
       .catch(async (e: unknown) => finish({ status: 'error', message: await getErrorMessage(e) }))
     return () => {
       cancelled = true
     }
-  }, [slug, month, requestKey])
+  }, [slug, requestKey])
 
   const slots = useMemo<LoadState<TimeSlot[]>>(
     () => (result?.key === requestKey ? result.state : { status: 'loading' }),
@@ -210,12 +205,15 @@ function SlotPicker({ slug, reloadKey, onSelect }: SlotPickerProps) {
     return map
   }, [slots])
 
-  // Keep the user's choice if it has slots, otherwise show the first available day of the month.
+  // Keep the guest's choice if it has slots, otherwise show the first available day of the window.
   const activeDate =
     selectedDate && slotsByDate.has(selectedDate)
       ? selectedDate
       : (slotsByDate.keys().next().value ?? null)
   const daySlots = activeDate ? (slotsByDate.get(activeDate) ?? []) : []
+  const today = dayjs().format('YYYY-MM-DD')
+  const lastSlotDate = [...slotsByDate.keys()].at(-1) ?? today
+  const shownMonth = month ?? dayjs(activeDate ?? today).startOf('month').format('YYYY-MM-DD')
 
   return (
     <Grid gap="lg">
@@ -223,11 +221,12 @@ function SlotPicker({ slug, reloadKey, onSelect }: SlotPickerProps) {
         <Stack gap="xs">
           <Text fw={600}>Выберите дату</Text>
           <DatePicker
-            date={month}
+            date={shownMonth}
             onDateChange={(date) => setMonth(dayjs(date).startOf('month').format('YYYY-MM-DD'))}
             value={activeDate}
             onChange={setSelectedDate}
-            minDate={dayjs().format('YYYY-MM-DD')}
+            minDate={today}
+            maxDate={lastSlotDate}
             excludeDate={(date) => !slotsByDate.has(date)}
             maxLevel="month"
           />
@@ -242,7 +241,7 @@ function SlotPicker({ slug, reloadKey, onSelect }: SlotPickerProps) {
             </Alert>
           )}
           {slots.status === 'ready' && !activeDate && (
-            <Text c="dimmed">В этом месяце нет свободного времени. Посмотрите следующий месяц.</Text>
+            <Text c="dimmed">В ближайшие 14 дней свободного времени нет.</Text>
           )}
           {activeDate && (
             <>

@@ -33,7 +33,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,8 +52,6 @@ class BookingFlowTests {
 	/** Sunday 2026-11-15 12:00 UTC; the next day is Monday 2026-11-16. */
 	static final Instant NOW = Instant.parse("2026-11-15T12:00:00Z");
 
-	private static final String MONDAY_FROM = "2026-11-16T00:00:00Z";
-	private static final String MONDAY_TO = "2026-11-17T00:00:00Z";
 
 	@TestConfiguration
 	static class FixedClockConfig {
@@ -101,30 +102,46 @@ class BookingFlowTests {
 	void returnsNotFoundForUnknownSlug() throws Exception {
 		mockMvc.perform(get("/api/public/event-types/unknown"))
 				.andExpect(status().isNotFound());
-		mockMvc.perform(get("/api/public/event-types/unknown/slots")
-						.param("from", MONDAY_FROM).param("to", MONDAY_TO))
+		mockMvc.perform(get("/api/public/event-types/unknown/slots"))
 				.andExpect(status().isNotFound());
 		book("unknown", "2026-11-16T09:00:00Z")
 				.andExpect(status().isNotFound());
 	}
 
 	@Test
-	void listsFreeSlots() throws Exception {
+	void listsFreeSlotsOfTheWholeBookingWindow() throws Exception {
+		// Window: Sunday 2026-11-15 .. Saturday 2026-11-28 (UTC) -> Mondays 16 and 23.
 		slots("consultation")
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", hasSize(4)))
+				.andExpect(jsonPath("$", hasSize(8)))
 				.andExpect(jsonPath("$[0].startAt").value("2026-11-16T09:00:00Z"))
 				.andExpect(jsonPath("$[0].endAt").value("2026-11-16T09:30:00Z"))
-				.andExpect(jsonPath("$[3].startAt").value("2026-11-16T10:30:00Z"));
+				.andExpect(jsonPath("$[3].startAt").value("2026-11-16T10:30:00Z"))
+				.andExpect(jsonPath("$[4].startAt").value("2026-11-23T09:00:00Z"))
+				.andExpect(jsonPath("$[7].startAt").value("2026-11-23T10:30:00Z"));
 	}
 
 	@Test
-	void acceptsJavaScriptStyleDatesWithMilliseconds() throws Exception {
-		mockMvc.perform(get("/api/public/event-types/consultation/slots")
-						.param("from", "2026-11-16T00:00:00.000Z")
-						.param("to", "2026-11-17T00:00:00.000Z"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", hasSize(4)));
+	void excludesSlotsAfterTheBookingWindow() throws Exception {
+		// Monday 2026-11-30 is the 16th day: outside the 14-day window.
+		slots("consultation")
+				.andExpect(jsonPath("$[*].startAt", not(hasItem(startsWith("2026-11-30")))));
+	}
+
+	@Test
+	void rejectsBookingOutsideTheBookingWindow() throws Exception {
+		book("consultation", "2026-11-30T09:00:00Z")
+				.andExpect(status().isConflict())
+				.andExpect(jsonPath("$.message").value(containsString("not available")));
+	}
+
+	@Test
+	void acceptsStartTimeWithMillisecondsOrOffset() throws Exception {
+		// JavaScript sends milliseconds; an offset is normalized to UTC.
+		book("consultation", "2026-11-16T09:00:00.000Z").andExpect(status().isCreated());
+		book("consultation", "2026-11-16T12:30:00+03:00")
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.startAt").value("2026-11-16T09:30:00Z"));
 	}
 
 	@Test
@@ -141,7 +158,7 @@ class BookingFlowTests {
 				.andExpect(jsonPath("$.createdAt").value("2026-11-15T12:00:00Z"));
 
 		slots("consultation")
-				.andExpect(jsonPath("$", hasSize(3)))
+				.andExpect(jsonPath("$", hasSize(7)))
 				.andExpect(jsonPath("$[0].startAt").value("2026-11-16T09:00:00Z"))
 				.andExpect(jsonPath("$[1].startAt").value("2026-11-16T10:00:00Z"));
 	}
@@ -160,7 +177,7 @@ class BookingFlowTests {
 		book("strategy", "2026-11-16T09:00:00Z").andExpect(status().isCreated());
 
 		slots("consultation")
-				.andExpect(jsonPath("$", hasSize(2)))
+				.andExpect(jsonPath("$", hasSize(6)))
 				.andExpect(jsonPath("$[0].startAt").value("2026-11-16T10:00:00Z"));
 		book("consultation", "2026-11-16T09:30:00Z").andExpect(status().isConflict());
 	}
@@ -202,27 +219,6 @@ class BookingFlowTests {
 	}
 
 	@Test
-	void validatesSlotsRange() throws Exception {
-		mockMvc.perform(get("/api/public/event-types/consultation/slots").param("from", MONDAY_FROM))
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.message").value(containsString("'to'")));
-
-		mockMvc.perform(get("/api/public/event-types/consultation/slots")
-						.param("from", MONDAY_TO).param("to", MONDAY_FROM))
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.message").value(containsString("before")));
-
-		mockMvc.perform(get("/api/public/event-types/consultation/slots")
-						.param("from", "2026-11-16T00:00:00Z").param("to", "2027-01-31T00:00:00Z"))
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.message").value(containsString("62 days")));
-
-		mockMvc.perform(get("/api/public/event-types/consultation/slots")
-						.param("from", "yesterday").param("to", MONDAY_TO))
-				.andExpect(status().isBadRequest());
-	}
-
-	@Test
 	void ownerSeesBookingsOrderedByStartTime() throws Exception {
 		book("strategy", "2026-11-16T10:00:00Z").andExpect(status().isCreated());
 		book("consultation", "2026-11-16T09:00:00Z").andExpect(status().isCreated());
@@ -253,19 +249,21 @@ class BookingFlowTests {
 				.andExpect(jsonPath("$", hasSize(1)))
 				.andExpect(jsonPath("$[0].startAt").value("2026-11-16T09:00:00Z"))
 				.andExpect(jsonPath("$[0].status").value("CONFIRMED"));
-		slots("consultation").andExpect(jsonPath("$", hasSize(0)));
+		// New slots follow the new schedule: Tuesdays 17 and 24, 09:00-10:00.
+		slots("consultation")
+				.andExpect(jsonPath("$", hasSize(4)))
+				.andExpect(jsonPath("$[0].startAt").value("2026-11-17T09:00:00Z"));
 	}
 
 	@Test
 	void concurrentRequestsCannotBookSameSlot() throws Exception {
 		int threads = 8;
-		BookingRequest request = new BookingRequest(
-				Instant.parse("2026-11-16T09:00:00Z"), "Гость", "guest@example.com");
+		Instant startAt = Instant.parse("2026-11-16T09:00:00Z");
 		List<Callable<Boolean>> tasks = new ArrayList<>();
 		for (int i = 0; i < threads; i++) {
 			tasks.add(() -> {
 				try {
-					bookingService.create("consultation", request);
+					bookingService.create("consultation", startAt, "Гость", "guest@example.com");
 					return true;
 				} catch (ConflictException e) {
 					return false;
@@ -290,9 +288,7 @@ class BookingFlowTests {
 	}
 
 	private ResultActions slots(String slug) throws Exception {
-		return mockMvc.perform(get("/api/public/event-types/{slug}/slots", slug)
-				.param("from", MONDAY_FROM)
-				.param("to", MONDAY_TO));
+		return mockMvc.perform(get("/api/public/event-types/{slug}/slots", slug));
 	}
 
 	private ResultActions book(String slug, String startAt) throws Exception {

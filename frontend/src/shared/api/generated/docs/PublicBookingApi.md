@@ -153,11 +153,11 @@ No authorization required
 
 ## publicBookingListSlots
 
-> Array&lt;TimeSlot&gt; publicBookingListSlots(slug, from, to)
+> Array&lt;TimeSlot&gt; publicBookingListSlots(slug)
 
 
 
-List free slots for an event type that start within [from, to). Slots in the past and slots overlapping existing bookings are excluded. The range must not exceed 62 days.
+List all free slots of the event type within the booking window: today and the next 13 calendar days in the owner time zone. Slots that already started and slots overlapping existing bookings are excluded.
 
 ### Example
 
@@ -175,10 +175,6 @@ async function example() {
   const body = {
     // string
     slug: slug_example,
-    // Date
-    from: 2013-10-20T19:20:30+01:00,
-    // Date
-    to: 2013-10-20T19:20:30+01:00,
   } satisfies PublicBookingListSlotsRequest;
 
   try {
@@ -199,8 +195,6 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **slug** | `string` |  | [Defaults to `undefined`] |
-| **from** | `Date` |  | [Defaults to `undefined`] |
-| **to** | `Date` |  | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -220,7 +214,6 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The request has succeeded. |  -  |
-| **400** | Bad request: validation failed. |  -  |
 | **404** | Resource not found. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

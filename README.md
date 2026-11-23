@@ -136,11 +136,11 @@ Dev-сервер Vite проксирует запросы `/api` на backend. �
 | Метод | Путь | Назначение |
 |---|---|---|
 | `GET`, `POST` | `/api/event-types` | Список и создание типов встреч |
-| `GET`, `PUT` | `/api/event-types/{id}` | Получение и изменение типа встречи |
+| `GET`, `PUT`, `DELETE` | `/api/event-types/{id}` | Получение, изменение и удаление типа встречи (удаление — только без записей) |
 | `GET`, `PUT` | `/api/schedule` | Расписание владельца |
 | `GET` | `/api/bookings` | Записи владельца |
 | `GET` | `/api/public/event-types/{slug}` | Информация о типе встречи для гостя |
-| `GET` | `/api/public/event-types/{slug}/slots?from=&to=` | Свободные слоты (время в UTC, период до 62 дней) |
+| `GET` | `/api/public/event-types/{slug}/slots` | Свободные слоты окна записи: сегодня и 13 следующих дней по времени владельца (время в UTC) |
 | `POST` | `/api/public/event-types/{slug}/bookings` | Создание записи |
 
 Полное описание — в контракте `contracts/main.tsp` и сгенерированной спецификации `contracts/openapi/openapi.yaml`.

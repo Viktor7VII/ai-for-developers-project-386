@@ -2,16 +2,14 @@ package com.hexlet.backend.booking;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.hexlet.backend.api.BookingsApi;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Owner endpoints for bookings.
- */
+/** Owner list of bookings, implements the generated {@link BookingsApi} (ADR-0003). */
 @RestController
-@RequestMapping("/api/bookings")
-public class BookingController {
+public class BookingController implements BookingsApi {
 
 	private final BookingService bookingService;
 
@@ -19,8 +17,8 @@ public class BookingController {
 		this.bookingService = bookingService;
 	}
 
-	@GetMapping
-	public List<BookingResponse> list() {
-		return bookingService.listAll();
+	@Override
+	public ResponseEntity<List<com.hexlet.backend.api.model.Booking>> bookingsList() {
+		return ResponseEntity.ok(bookingService.listAll().stream().map(BookingMapper::toDto).toList());
 	}
 }

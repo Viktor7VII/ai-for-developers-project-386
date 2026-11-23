@@ -7,7 +7,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.hexlet.backend.common.BadRequestException;
 import com.hexlet.backend.common.ConflictException;
 import com.hexlet.backend.eventtype.EventType;
 import com.hexlet.backend.eventtype.EventTypeService;
@@ -20,8 +19,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Service
 public class BookingService {
 
-	static final Duration MAX_SLOTS_RANGE = Duration.ofDays(62);
-
 	private final EventTypeService eventTypeService;
 	private final SlotService slotService;
 	private final BookingRepository bookingRepository;
@@ -29,9 +26,8 @@ public class BookingService {
 	private final Clock clock;
 
 	/**
-	 * Serializes "check availability + insert" so two visitors can't book the same time.
-	 * The lock is held until the transaction commits. This is enough for a single application
-	 * instance; the unique constraint on start time is an additional database-level guard.
+	 * Serializes "check availability + insert" so two guests can't book overlapping time (ADR-0002).
+	 * The lock is held until the transaction commits; the unique start constraint is a database-level guard.
 	 */
 	private final ReentrantLock bookingLock = new ReentrantLock();
 
@@ -49,50 +45,41 @@ public class BookingService {
 		this.clock = clock;
 	}
 
+	/** Free slots of the event type within the booking window. */
 	@Transactional(readOnly = true)
-	public List<TimeSlot> listFreeSlots(String slug, Instant from, Instant to) {
-		if (!from.isBefore(to)) {
-			throw new BadRequestException("from must be before to");
-		}
-		if (Duration.between(from, to).compareTo(MAX_SLOTS_RANGE) > 0) {
-			throw new BadRequestException("range between from and to must not exceed "
-					+ MAX_SLOTS_RANGE.toDays() + " days");
-		}
-		EventType eventType = eventTypeService.findBySlug(slug);
-		return slotService.findFreeSlots(eventType, from, to);
+	public List<TimeSlot> listFreeSlots(String slug) {
+		return slotService.findFreeSlots(eventTypeService.findBySlug(slug));
 	}
 
-	public BookingResponse create(String slug, BookingRequest request) {
+	public Booking create(String slug, Instant startAt, String guestName, String guestEmail) {
 		bookingLock.lock();
 		try {
-			return transactionTemplate.execute(status -> createInTransaction(slug, request));
+			return transactionTemplate.execute(status -> createInTransaction(slug, startAt, guestName, guestEmail));
 		} finally {
 			bookingLock.unlock();
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public List<BookingResponse> listAll() {
-		return bookingRepository.findAllWithEventTypeOrderByStartAt().stream()
-				.map(BookingResponse::from)
-				.toList();
+	public List<Booking> listAll() {
+		return bookingRepository.findAllWithEventTypeOrderByStartAt();
 	}
 
-	private BookingResponse createInTransaction(String slug, BookingRequest request) {
+	private Booking createInTransaction(String slug, Instant startAt, String guestName, String guestEmail) {
 		EventType eventType = eventTypeService.findBySlug(slug);
-		Instant startAt = request.startAt();
+		// Re-checks the booking window, slot grid, schedule and overlaps with all bookings.
 		if (!slotService.isFree(eventType, startAt)) {
 			throw new ConflictException("Selected time slot is not available");
 		}
 		Booking booking = new Booking(
 				eventType,
-				request.guestName().strip(),
-				request.guestEmail().strip(),
+				guestName.strip(),
+				guestEmail.strip(),
 				startAt,
 				startAt.plus(Duration.ofMinutes(eventType.getDurationMinutes())),
 				// Millisecond precision: same value in the response and in the database, and JS-friendly.
 				clock.instant().truncatedTo(ChronoUnit.MILLIS)
 		);
-		return BookingResponse.from(bookingRepository.saveAndFlush(booking));
+		return bookingRepository.saveAndFlush(booking);
 	}
 }

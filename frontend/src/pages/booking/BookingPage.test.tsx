@@ -54,12 +54,9 @@ describe('BookingPage', () => {
     // 10:00 belongs to another day.
     expect(screen.queryByRole('button', { name: '10:00' })).not.toBeInTheDocument()
 
-    // Slots are requested from now until the end of the current month.
-    expect(publicBookingApi.publicBookingListSlots).toHaveBeenCalledWith({
-      slug: 'consultation',
-      from: NOW,
-      to: new Date('2026-12-01T00:00:00Z'),
-    })
+    // The whole booking window is requested at once; the server computes it.
+    expect(publicBookingApi.publicBookingListSlots).toHaveBeenCalledTimes(1)
+    expect(publicBookingApi.publicBookingListSlots).toHaveBeenCalledWith({ slug: 'consultation' })
   })
 
   it('books a slot and shows the confirmation', async () => {
@@ -134,11 +131,11 @@ describe('BookingPage', () => {
     expect(screen.getByRole('button', { name: '09:30' })).toBeInTheDocument()
   })
 
-  it('shows a message when there is no free time this month', async () => {
+  it('shows a message when there is no free time in the booking window', async () => {
     publicBookingApi.publicBookingListSlots.mockResolvedValue([])
     renderApp('/book/consultation')
 
-    expect(await screen.findByText(/В этом месяце нет свободного времени/)).toBeInTheDocument()
+    expect(await screen.findByText(/В ближайшие 14 дней свободного времени нет/)).toBeInTheDocument()
   })
 
   it('shows not found for an unknown event type', async () => {
