@@ -167,6 +167,8 @@ docs: update project setup instructions
 
 The hk `commit-msg` hook validates commit messages.
 
+Releases are managed by release-please (`.github/workflows/release-please.yml`, `release-please-config.json`): commit types drive the version and `CHANGELOG.md`; the release happens when the release PR is merged. Do not edit `version.txt`, `CHANGELOG.md` or `.release-please-manifest.json` manually.
+
 After cloning the repository, install the hook with:
 
 ```bash

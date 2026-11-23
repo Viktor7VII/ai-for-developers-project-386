@@ -163,6 +163,10 @@ mise run e2e
 
 В CI сценарий выполняется отдельной задачей `e2e` после общей проверки.
 
+## Релизы
+
+Версии выпускаются через [release-please](https://github.com/googleapis/release-please): одна версия на весь репозиторий (`version.txt`), общий `CHANGELOG.md` и теги `vX.Y.Z`, первая версия — 0.1.0. После каждого push в `master` workflow `release-please` открывает или обновляет release PR со списком изменений из Conventional Commits; релиз и тег создаются, когда этот PR сливают. Для работы в настройках репозитория должно быть включено Settings → Actions → General → «Allow GitHub Actions to create and approve pull requests».
+
 ---
 
 <details>
