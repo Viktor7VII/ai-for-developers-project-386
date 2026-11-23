@@ -108,6 +108,12 @@ cd frontend
 npm test
 ```
 
+Run the browser scenario (Playwright, `e2e/`). It starts the backend on port 18080 with an in-memory database and the Vite dev server on port 15173 itself; install Chromium once with `npx playwright install chromium` in `e2e/`:
+
+```bash
+mise run e2e
+```
+
 Run frontend lint:
 
 ```bash
