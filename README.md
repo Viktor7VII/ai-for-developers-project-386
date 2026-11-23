@@ -172,7 +172,7 @@ docker build -t call-calendar .
 docker run -p 8080:8080 -e PORT=8080 call-calendar
 ```
 
-Публичная версия: _ссылка появится после деплоя_ (Render, Docker web service, конфигурация — `render.yaml`).
+Публичная версия: https://call-calendar-gvm0.onrender.com (Render, Docker web service, бесплатный тариф: после простоя первый запрос может идти до минуты, пока сервис «просыпается»). Кабинет владельца — https://call-calendar-gvm0.onrender.com/admin.
 
 ### Хранение данных
 
