@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/Viktor7VII/ai-for-developers-project-386/compare/v0.1.0...v0.1.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* guard event type deletion with the booking lock ([d3b7582](https://github.com/Viktor7VII/ai-for-developers-project-386/commit/d3b758202aeaedb817aa43a62ae05d8174e03fa2)), closes [#5](https://github.com/Viktor7VII/ai-for-developers-project-386/issues/5)
+* use glossary terms in booking texts and README ([a5e7f7e](https://github.com/Viktor7VII/ai-for-developers-project-386/commit/a5e7f7e61d68477c3027ad612d8bd8b15877bf66)), closes [#19](https://github.com/Viktor7VII/ai-for-developers-project-386/issues/19)
+
 ## 0.1.0 (2026-11-23)
 
 
