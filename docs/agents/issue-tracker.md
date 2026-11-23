@@ -1,30 +1,49 @@
-# Issue tracker: Local Markdown
+# Issue tracker: GitHub Issues
 
-Issues and specs for this repo live as markdown files in `.scratch/`.
+The project's issues, specs and decision maps live in GitHub Issues of `Viktor7VII/ai-for-developers-project-386`. Use the `gh` CLI for all operations (`gh` infers the repo from `git remote -v`).
+
+`.scratch/core-spec/` is the local copy and working material of the core specification: the decision map, 15 decision tickets and the six implementation slice tickets in `.scratch/core-spec/slices/` (these slices are not migrated to GitHub Issues; GitHub issues link to them). Every migrated issue links back to its local file. Keep both in sync when a decision changes: the GitHub issue is authoritative, the local file mirrors it.
+
+## Current structure
+
+- **Map**: #3 — decision map of the core specification, label `wayfinder:map`.
+- **Specification**: #19 — index of the agreed specification (links to the tickets, `GLOSSARY.md`, ADRs, contract and slice tickets), label `spec`.
+- **Decision tickets**: #4–#18 — sub-issues of #3, labels `wayfinder:grilling` / `wayfinder:research`, answers recorded as the first `## Answer` comment.
 
 ## Conventions
 
-- One feature per directory: `.scratch/<feature-slug>/`
-- The spec is `.scratch/<feature-slug>/spec.md`
-- Implementation issues are one file per ticket at `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`, never a single combined tickets file
-- Triage state is recorded as a `Status:` line near the top of each issue file (see `triage-labels.md` for the role strings)
-- Comments and conversation history append to the bottom of the file under a `## Comments` heading
+- **Create an issue**: `gh issue create --title "..." --body-file <file>`. Body starts with the question or task; add `Part of #<map>` and `Blocked by: #<n>, #<n>` lines when relevant, and a link to related repository documents.
+- **Read an issue**: `gh issue view <number> --json number,title,body,labels,comments,state`.
+- **List issues**: `gh issue list --state all --json number,title,labels,state` with `--label` filters.
+- **Update an issue**: `gh issue edit <number> --body-file <file>` / `--title`; keep the original question intact and record changes in a comment.
+- **Sub-issue of a parent (map)**: `gh issue edit <parent> --add-sub-issue <child>` or `gh api --method POST repos/{owner}/{repo}/issues/<parent>/sub_issues -F sub_issue_id=<child-db-id>`.
+- **Blocking**: GitHub native issue dependencies: `gh issue edit <child> --add-blocked-by <blocker>` or `gh api --method POST repos/{owner}/{repo}/issues/<child>/dependencies/blocked_by -F issue_id=<blocker-db-id>` (`<db-id>` from `gh api repos/{owner}/{repo}/issues/<n> --jq .id`). Mirror it in the body as a `Blocked by:` line. A ticket is resolved when it has an `## Answer` comment (issues stay open unless the user asks to close them); it is unblocked when every blocker is resolved.
+- **Answer / resolution**: post the decision as a comment starting with `## Answer` (`gh issue comment <number> --body-file <file>`), then update the local copy in `.scratch/`.
+- **Close**: only when the user explicitly asks; post the explanation as a comment first, then `gh issue close <number> --reason completed`. Never close issues automatically or via commit keywords (`Closes #n`).
+- **Labels**: `gh issue edit <number> --add-label "..."` / `--remove-label "..."`.
+- **Commits**: implementation commits reference their ticket with a `Refs:` line (AGENTS.md); use `Refs: #<n>` for GitHub issues or the ticket file path for slice tickets in `.scratch/core-spec/slices/`.
+
+File issues only into this repository. Never file into `mattpocock/skills`.
+
+## Pull requests as a triage surface
+
+**PRs as a request surface: no.** _(Set to `yes` if this repo treats external PRs as feature requests; `/triage` reads this flag.)_
 
 ## When a skill says "publish to the issue tracker"
 
-Create a new file under `.scratch/<feature-slug>/` (creating the directory if needed).
+Create a GitHub issue (and mirror it in `.scratch/` if it belongs to the core specification).
 
 ## When a skill says "fetch the relevant ticket"
 
-Read the file at the referenced path. The user will normally pass the path or the issue number directly.
+Read it as in **Read an issue** above; for slice tickets read the file in `.scratch/core-spec/slices/`.
 
 ## Wayfinding operations
 
-Used by `/wayfinder`. The **map** is a file with one **child** file per ticket.
+Used by `/wayfinder`. The **map** is a single issue with **child** issues as tickets.
 
-- **Map**: `.scratch/<effort>/map.md` (the Notes / Decisions-so-far / Fog body).
-- **Child ticket**: `.scratch/<effort>/issues/NN-<slug>.md`, numbered from `01`, with the question in the body. A `Type:` line records the ticket type (`research`/`prototype`/`grilling`/`task`); a `Status:` line records `claimed`/`resolved`.
-- **Blocking**: a `Blocked by: NN, NN` line near the top. A ticket is unblocked when every file it lists is `resolved`.
-- **Frontier**: scan `.scratch/<effort>/issues/` for files that are open, unblocked, and unclaimed; first by number wins.
-- **Claim**: set `Status: claimed` and save before any work.
-- **Resolve**: append the answer under an `## Answer` heading, set `Status: resolved`, then append a context pointer (gist + link) to the map's Decisions-so-far in `map.md`.
+- **Map**: an issue labelled `wayfinder:map` holding Destination / Notes / Decisions so far / Not yet specified / Out of scope.
+- **Child ticket**: a sub-issue of the map with label `wayfinder:<type>` (`research` / `prototype` / `grilling` / `task`).
+- **Blocking**: see **Blocking** above.
+- **Frontier**: sub-issues of the map without an `## Answer` comment, whose blockers are all resolved, and without an assignee; first in map order wins.
+- **Claim**: `gh issue edit <n> --add-assignee @me`, the session's first write.
+- **Resolve**: post the `## Answer` comment, append a context pointer (gist + link) to the map's Decisions so far; close only on the user's instruction.

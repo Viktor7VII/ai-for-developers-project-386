@@ -34,7 +34,8 @@ The project is currently at the scaffolding stage. Do not assume that business f
 - `mise.lock` — locked tool versions.
 - `hk.pkl` and `.hk/pkl/` — hk configuration and local Pkl dependencies.
 - `.claude/skills/` and `skills-lock.json` — agent skills installed from `mattpocock/skills`; restore them with `npx skills experimental_install`.
-- `docs/agents/` — skills configuration: issue tracker, triage labels, domain docs layout.
+- `docs/agents/` — skills configuration: issue tracker (GitHub Issues), triage labels, domain docs layout.
+- `.scratch/` — local copy of the specification and decision tickets, implementation slice tickets.
 
 ## Development setup
 
@@ -142,11 +143,12 @@ mise run generate
 
 Use Conventional Commits.
 
-Every implementation commit references its ticket in the issue tracker with a `Refs` line in the commit body, pointing to the ticket file:
+Every implementation commit references its ticket with a `Refs` line in the commit body: the GitHub issue (`Refs: #<number>`) or, for implementation slices kept only locally, the ticket file:
 
 ```text
 feat: add owner notes to bookings
 
+Refs: #18
 Refs: .scratch/core-spec/slices/07-owner-notes.md
 ```
 
@@ -187,15 +189,21 @@ mise exec -- hk install
 
 ### Issue tracker
 
-Issues and specs live as local markdown files under `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.
+GitHub Issues is the primary tracker: decision map #3, specification #19, decision tickets #4–#18 (sub-issues of #3 with native blocked-by dependencies, answers as `## Answer` comments). `.scratch/core-spec/` is the local copy and working material; implementation slice tickets live only in `.scratch/core-spec/slices/`. Never close issues automatically. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
-Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`), recorded as a `Status:` line in each issue file. See `docs/agents/triage-labels.md`.
+Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`), applied as GitHub labels (local slice files record them as a `Status:` line). See `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
 Single-context: `GLOSSARY.md` and ADRs in `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+## MCP
+
+- `.mcp.json` connects the Render MCP server (`https://mcp.render.com/mcp`) used to create and inspect the Render deployment (service `call-calendar`, see README).
+- Authorization is a Render API key read from the `RENDER_API_KEY` environment variable (`Authorization: Bearer ${RENDER_API_KEY}`); the variable is set in the user's system, and Claude Code must be restarted after setting it.
+- Secrets are never stored in the repository: no API keys, tokens or passwords in `.mcp.json`, code, docs or commit messages. Reference them only through environment variables.
 
 ## Working rules
 
