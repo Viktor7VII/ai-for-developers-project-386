@@ -143,14 +143,18 @@ mise run generate
 
 Use Conventional Commits.
 
-Every implementation commit references its ticket with a `Refs` line in the commit body: the GitHub issue (`Refs: #<number>`) or, for implementation slices kept only locally, the ticket file:
+Every implementation commit references its ticket with a `Refs` line in the commit body: the GitHub issue by its full URL and, for implementation slices kept only locally, the ticket file path:
 
 ```text
 feat: add owner notes to bookings
 
-Refs: #18
+Refs: https://github.com/Viktor7VII/ai-for-developers-project-386/issues/18
 Refs: .scratch/core-spec/slices/07-owner-notes.md
 ```
+
+- Do not write `#<number>` in commit messages (especially `feat` / `fix`); use the full URL `https://github.com/Viktor7VII/ai-for-developers-project-386/issues/<number>`.
+- Do not put closing keywords (`close`, `closes`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`, `resolved`) next to issue references.
+- Why: release-please builds the changelog with conventional-changelog (`conventionalcommits` preset), which detects `#<number>` anywhere in the message regardless of the `Refs:` prefix and renders it as `closes #<number>` in the release PR; merging that PR would close the issue.
 
 Allowed commit types:
 
