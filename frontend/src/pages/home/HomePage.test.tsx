@@ -64,6 +64,24 @@ describe('HomePage', () => {
     ])
   })
 
+  it('shows a loading indicator until event types arrive', async () => {
+    let resolveList: (eventTypes: (typeof consultation)[]) => void = () => {}
+    eventTypesApi.eventTypesList.mockReturnValue(
+      new Promise((resolve) => {
+        resolveList = resolve
+      }),
+    )
+    renderApp('/')
+
+    expect(screen.getByRole('status', { name: 'Загрузка типов встреч' })).toBeInTheDocument()
+    expect(screen.queryByText('Владелец пока не открыл запись.')).not.toBeInTheDocument()
+
+    resolveList([consultation])
+
+    expect(await screen.findByRole('heading', { name: 'Консультация' })).toBeInTheDocument()
+    expect(screen.queryByRole('status', { name: 'Загрузка типов встреч' })).not.toBeInTheDocument()
+  })
+
   it('tells the guest when the owner has no event types yet', async () => {
     eventTypesApi.eventTypesList.mockResolvedValue([])
     renderApp('/')
@@ -77,6 +95,7 @@ describe('HomePage', () => {
     renderApp('/')
 
     expect(await screen.findByText('Boom')).toBeInTheDocument()
+    expect(screen.getByText('Не удалось загрузить типы встреч')).toBeInTheDocument()
     expect(screen.queryByText('Владелец пока не открыл запись.')).not.toBeInTheDocument()
   })
 
@@ -87,7 +106,9 @@ describe('HomePage', () => {
     expect(
       await screen.findByRole('heading', { level: 1, name: 'Календарь звонков' }),
     ).toBeInTheDocument()
-    expect(screen.getByText(/без регистрации/)).toBeInTheDocument()
+    expect(
+      screen.getByText('Выберите тип встречи и запишитесь на удобное время — регистрация не нужна.'),
+    ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Кабинет владельца' })).toHaveAttribute('href', '/admin')
   })
 })
